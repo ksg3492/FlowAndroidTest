@@ -32,6 +32,8 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivityMainBinding
     private val mainViewModel : MainViewModel by viewModels()
+    private var snackbar : Snackbar? = null
+    private var snackbarText : String? = null
 
     @Inject
     lateinit var adapter : MovieRecyclerAdapter
@@ -65,6 +67,36 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 this.pagingHelper.setIsLoading(false)
             }
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    override fun onBackPressed() {
+        this.appFinishDelay()
+    }
+
+    /**
+     * 취소키로 종료 기능
+     */
+    private fun appFinishDelay() {
+        val exitString = getString(R.string.snackbar_msg_app_exit)
+        if (this.snackbar?.isShown == true && (exitString == snackbarText)) {
+            finish()
+        } else {
+            this.showSnackbar(exitString)
+        }
+    }
+
+    private fun showSnackbar(msg : String) {
+        this.snackbarText = msg
+        this.snackbar = Snackbar.make(this.binding.root, msg, Snackbar.LENGTH_SHORT)
+        this.snackbar?.show()
     }
 
     /**
@@ -101,7 +133,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             else -> R.string.unknown_error
         }
 
-        Snackbar.make(binding.root, getString(msgId), Snackbar.LENGTH_SHORT).show()
+        showSnackbar(getString(msgId))
     }
 
     /**
@@ -123,7 +155,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
                 startActivity(browserIntent)
             } catch (e : Exception) {
-                Snackbar.make(binding.root, getString(R.string.error_browser), Snackbar.LENGTH_SHORT).show()
+                showSnackbar(getString(R.string.error_browser))
             }
         }
     }

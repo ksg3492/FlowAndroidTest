@@ -8,9 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.sunggil.flowandroidtest.R
-import com.sunggil.flowandroidtest.data.network.ErrorCode
 import com.sunggil.flowandroidtest.databinding.ActivityRecentBinding
 import com.sunggil.flowandroidtest.ui.adapter.RecentRecyclerAdapter
 import com.sunggil.flowandroidtest.ui.base.ActivityValue
@@ -47,14 +45,6 @@ class RecentActivity : AppCompatActivity() {
         //db 에서 조회
         this.recentViewModel.selectKeywords()
     }
-
-    /**
-     * 에러 스낵바
-     */
-    private val failCallback : ((ErrorCode) -> Unit) = {
-        Snackbar.make(binding.root, getString(R.string.error_database), Snackbar.LENGTH_SHORT).show()
-    }
-
 
     /**
      * 어댑터 아이템 클릭 리스너
