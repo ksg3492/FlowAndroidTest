@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -52,7 +50,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         this.binding.btSearchRecent.setOnClickListener(this)
 
         this.binding.etSearch.setText(this.mainViewModel.searchedKeyword)
-        this.binding.etSearch.addTextChangedListener(textWatcher)
         this.binding.etSearch.setOnEditorActionListener(editorActionListener)
 
         this.binding.rvMovie.adapter = this.adapter
@@ -68,21 +65,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 this.pagingHelper.setIsLoading(false)
             }
         })
-    }
-
-    /**
-     * 입력 감지 리스너
-     */
-    //todo 쓸지 말지?
-    private val textWatcher : TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s : CharSequence?, start : Int, count : Int, after : Int) {
-        }
-
-        override fun onTextChanged(s : CharSequence?, start : Int, before : Int, count : Int) {
-        }
-
-        override fun afterTextChanged(s : Editable?) {
-        }
     }
 
     /**

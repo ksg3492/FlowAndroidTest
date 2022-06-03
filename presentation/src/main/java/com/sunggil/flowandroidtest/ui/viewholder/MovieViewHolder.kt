@@ -1,7 +1,5 @@
 package com.sunggil.flowandroidtest.ui.viewholder
 
-import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.sunggil.flowandroidtest.R
 import com.sunggil.flowandroidtest.databinding.ItemMovieBinding
@@ -11,12 +9,11 @@ import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
 class MovieViewHolder(
     val requestManager : RequestManager,
     val binding : ItemMovieBinding,
-    val itemClickListener : OnItemClickListener<Movie>?
-) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+    itemClickListener : OnItemClickListener<Movie>?
+) : BaseViewHolder<Movie, ItemMovieBinding>(binding, itemClickListener) {
 
-    fun setItem(item : Movie) {
-        binding.root.tag = item
-        binding.root.setOnClickListener(this)
+    override fun setItem(item : Movie) {
+        super.setItem(item)
 
         binding.tvTitle.text = item.title
         binding.tvDate.text = item.pubDate
@@ -26,9 +23,5 @@ class MovieViewHolder(
             .centerCrop()
             .error(R.drawable.img_error)
             .into(binding.ivMovie)
-    }
-
-    override fun onClick(v : View?) {
-        this.itemClickListener?.onItemClick(v?.tag as Movie)
     }
 }

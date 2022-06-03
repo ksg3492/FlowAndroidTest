@@ -22,7 +22,6 @@ class MovieRemoteDataSource(
     }
 
     fun searchMovieList(keyword : String) : Single<BaseResult<ArrayList<Movie>, Any>> {
-        //todo 최초검색어와 다음페이징의 검색어가 다를경우?
         if (keyword.isEmpty()) {
             return Single.just(BaseResult(null, ErrorCode.EMPTY_KEYWORD))
         }

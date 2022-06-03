@@ -10,7 +10,7 @@ import javax.inject.Inject
 class PagingHelper @Inject constructor() {
     private var isLoading : Boolean = false
     private var isEndItem : Boolean = false
-    private val VISIBLE_THRESHOLD : Int = 3
+    private val VISIBLE_THRESHOLD : Int = 1
     private var callback : OnLoadMoreDataCallback? = null
 
     fun setCallback (callback : OnLoadMoreDataCallback) {
