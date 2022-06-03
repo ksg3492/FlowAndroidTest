@@ -7,7 +7,8 @@ import com.sunggil.flowandroidtest.base.BaseNetworkViewModel
 import com.sunggil.flowandroidtest.data.network.ErrorCode
 import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
-import com.sunggil.flowandroidtest.domain.usercase.GetMovieListUserCase
+import com.sunggil.flowandroidtest.domain.usercase.GetKeywordsUserCase
+import com.sunggil.flowandroidtest.domain.usercase.GetMovieListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getMovieListUserCase : GetMovieListUserCase,
+    private val getMovieListUseCase : GetMovieListUseCase,
+    private val getKeywordsUseCase : GetKeywordsUserCase,
 ) : BaseNetworkViewModel() {
 
     private val API_NAME_MOVIE_LIST = "API_NAME_MOVIE_LIST"
@@ -50,7 +52,7 @@ class MainViewModel @Inject constructor(
      * 검색 데이터 초기화
      */
     fun clear() {
-        this.getMovieListUserCase.initPaging()
+        this.getMovieListUseCase.initPaging()
         this._movieList.value?.clear()
     }
 
@@ -71,7 +73,7 @@ class MainViewModel @Inject constructor(
         cancelObserver(this.API_NAME_MOVIE_LIST)
         addObserver(
             this.API_NAME_MOVIE_LIST,
-            this.getMovieListUserCase.searchMovieList(keyword)
+            this.getMovieListUseCase.searchMovieList(keyword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { setLoading(true) }
@@ -85,7 +87,7 @@ class MainViewModel @Inject constructor(
                                 combineList.addAll(it.data!!)
 
                                 //페이징 체크
-                                getMovieListUserCase.checkNextPaging(combineList)
+                                getMovieListUseCase.checkNextPaging(combineList)
 
                                 setMovieList(combineList)
                             } else {
@@ -114,7 +116,7 @@ class MainViewModel @Inject constructor(
         }
 
         //먼저 db에 삽입 후 api 통신
-        this.getMovieListUserCase.insertKeyword(keyword)
+        this.getKeywordsUseCase.insertKeyword(keyword)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .subscribe {
@@ -132,7 +134,7 @@ class MainViewModel @Inject constructor(
      * db 10개 이상인 경우 삭제
      */
     private fun deleteKeywords() {
-        this.getMovieListUserCase.deleteKeywords()
+        this.getKeywordsUseCase.deleteKeywords()
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .subscribe {

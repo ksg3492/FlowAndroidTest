@@ -3,7 +3,7 @@ package com.sunggil.flowandroidtest.data.repository
 import com.sunggil.flowandroidtest.data.database.MovieDataBase
 import io.reactivex.rxjava3.core.Maybe
 
-class MovieLocalDataSource(
+class KeywordLocalDataSource(
     private val movieDataBase : MovieDataBase,
 ) {
     fun selectKeywords() : Maybe<ArrayList<String>> {

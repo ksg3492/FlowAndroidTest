@@ -5,38 +5,43 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.sunggil.flowandroidtest.data.database.MovieDataBase
 import com.sunggil.flowandroidtest.data.network.api.MovieApiService
-import com.sunggil.flowandroidtest.data.repository.MovieLocalDataSource
+import com.sunggil.flowandroidtest.data.repository.KeywordRepositoryImpl
+import com.sunggil.flowandroidtest.data.repository.KeywordLocalDataSource
 import com.sunggil.flowandroidtest.data.repository.MovieRemoteDataSource
 import com.sunggil.flowandroidtest.data.repository.MovieRepositoryImpl
+import com.sunggil.flowandroidtest.domain.repository.KeywordRepository
 import com.sunggil.flowandroidtest.domain.repository.MovieRepository
-import com.sunggil.flowandroidtest.domain.usercase.GetMovieListUserCase
+import com.sunggil.flowandroidtest.domain.usercase.GetKeywordsUserCase
+import com.sunggil.flowandroidtest.domain.usercase.GetMovieListUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object PresentationLayerHilt {
 
     @Provides
-    fun providesGetMovieListUserCase(repository : MovieRepository) : GetMovieListUserCase {
-        return GetMovieListUserCase(repository)
+    fun providesGetMovieListUserCase(repository : MovieRepository) : GetMovieListUseCase {
+        return GetMovieListUseCase(repository)
     }
 
     @Provides
-    fun providesMovieRepository(dbService : MovieDataBase, apiService : MovieApiService) : MovieRepository {
-        return MovieRepositoryImpl(MovieLocalDataSource(dbService), MovieRemoteDataSource(apiService))
+    fun providesGetKeywordsUserCase(repository : KeywordRepository) : GetKeywordsUserCase {
+        return GetKeywordsUserCase(repository)
     }
 
-    @Singleton
     @Provides
-    fun provideMovieApiService(retrofit : Retrofit) : MovieApiService {
-        return retrofit.create(MovieApiService::class.java)
+    fun providesMovieRepository(apiService : MovieApiService) : MovieRepository {
+        return MovieRepositoryImpl(MovieRemoteDataSource(apiService))
+    }
+
+    @Provides
+    fun providesKeywordRepository(dbService : MovieDataBase) : KeywordRepository {
+        return KeywordRepositoryImpl(KeywordLocalDataSource(dbService))
     }
 }
 

@@ -1,11 +1,9 @@
 package com.sunggil.flowandroidtest.ui.recent
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.sunggil.flowandroidtest.data.network.ErrorCode
-import com.sunggil.flowandroidtest.domain.usercase.GetMovieListUserCase
+import com.sunggil.flowandroidtest.domain.usercase.GetKeywordsUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -13,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecentViewModel @Inject constructor(
-    private val getMovieListUserCase : GetMovieListUserCase
+    private val getKeywordUserCase : GetKeywordsUserCase,
 ) : ViewModel() {
 
     private var _recentList : MutableLiveData<ArrayList<String>?> = MutableLiveData(null)
@@ -40,7 +38,7 @@ class RecentViewModel @Inject constructor(
      * db에서 keywods 조회
      */
     fun selectKeywords() {
-        this.getMovieListUserCase.selectKeywords()
+        this.getKeywordUserCase.selectKeywords()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { setLoading(true) }

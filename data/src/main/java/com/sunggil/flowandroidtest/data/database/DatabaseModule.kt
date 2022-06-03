@@ -1,7 +1,6 @@
 package com.sunggil.flowandroidtest.data.database
 
 import android.content.Context
-import com.sunggil.flowandroidtest.data.database.MovieDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

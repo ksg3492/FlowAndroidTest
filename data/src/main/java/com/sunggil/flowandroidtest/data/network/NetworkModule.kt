@@ -2,6 +2,7 @@ package com.sunggil.flowandroidtest.data.network
 
 import com.sunggil.flowandroidtest.data.ConstValue
 import com.sunggil.flowandroidtest.data.Name
+import com.sunggil.flowandroidtest.data.network.api.MovieApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -83,5 +84,11 @@ object NetworkModule {
             .header(ConstValue.HEADER_ID, Name.id())
             .header(ConstValue.HEADER_SECRET, Name.key())
         return requestBuilder
+    }
+
+    @Singleton
+    @Provides
+    fun provideMovieApiService(retrofit : Retrofit) : MovieApiService {
+        return retrofit.create(MovieApiService::class.java)
     }
 }
