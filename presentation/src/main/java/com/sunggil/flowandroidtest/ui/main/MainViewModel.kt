@@ -61,6 +61,11 @@ class MainViewModel @Inject constructor(
         keyword : String,
         failCallback : ((ErrorCode) -> Unit)? = {},
     ) {
+        if (keyword.isEmpty()) {
+            failCallback?.invoke(ErrorCode.EMPTY_KEYWORD)
+            return
+        }
+
         this.searchedKeyword = keyword
 
         cancelObserver(this.API_NAME_MOVIE_LIST)
@@ -103,6 +108,11 @@ class MainViewModel @Inject constructor(
         keyword : String,
         failCallback : ((ErrorCode) -> Unit)? = {},
     ) {
+        if (keyword.isEmpty()) {
+            failCallback?.invoke(ErrorCode.EMPTY_KEYWORD)
+            return
+        }
+
         //먼저 db에 삽입 후 api 통신
         this.getMovieListUserCase.insertKeyword(keyword)
             .subscribeOn(Schedulers.io())

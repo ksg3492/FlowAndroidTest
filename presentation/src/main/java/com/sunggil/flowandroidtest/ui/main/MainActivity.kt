@@ -1,6 +1,7 @@
 package com.sunggil.flowandroidtest.ui.main
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -171,6 +173,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
+     * 키보드 숨김
+     */
+    fun hideKeyboard() {
+        val inputManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
+    }
+
+    /**
      * 클릭 리스너
      */
     override fun onClick(v : View?) {
@@ -178,6 +188,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.btSearch.id -> {
                 val keyword = binding.etSearch.text.toString()
                 this.search(keyword)
+                this.hideKeyboard()
             }
             binding.btSearchRecent.id -> {
                 //todo deprecated 정리
