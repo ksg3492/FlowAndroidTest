@@ -15,13 +15,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object PresentationLayerHilt {
 
-    @Singleton
     @Provides
     fun providesGetMovieListUserCase(repository : MovieRepository) : GetMovieListUserCase {
         return GetMovieListUserCase(repository)
     }
 
-    @Singleton
     @Provides
     fun providesMovieRepository(apiService : MovieApiService) : MovieRepository {
         return MovieRepositoryImpl(apiService)

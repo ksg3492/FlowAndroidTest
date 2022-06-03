@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.sunggil.flowandroidtest.R
+import com.sunggil.flowandroidtest.data.network.repository.ErrorCode
 import com.sunggil.flowandroidtest.databinding.ActivityMainBinding
 import com.sunggil.flowandroidtest.ui.adapter.MovieRecyclerAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,8 +86,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 에러 스낵바
      */
-    private val failCallback : ((Int) -> Unit) = {
-        Snackbar.make(binding.root, getString(it), Snackbar.LENGTH_SHORT).show()
+    private val failCallback : ((ErrorCode) -> Unit) = {
+        val msgId : Int = when (it) {
+            ErrorCode.EMPTY_KEYWORD -> R.string.empty_keyword
+            ErrorCode.LAST_PAGE -> R.string.last_page
+            else  -> R.string.unknown_error
+        }
+
+        Snackbar.make(binding.root, getString(msgId), Snackbar.LENGTH_SHORT).show()
     }
 
 

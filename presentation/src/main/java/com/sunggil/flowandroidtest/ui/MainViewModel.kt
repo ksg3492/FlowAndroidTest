@@ -2,10 +2,10 @@ package com.sunggil.flowandroidtest.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sunggil.flowandroidtest.R
 import com.sunggil.flowandroidtest.base.BaseNetworkViewModel
 import com.sunggil.flowandroidtest.data.ConstValue
-import com.sunggil.flowandroidtest.data.network.repository.PagingSource
+import com.sunggil.flowandroidtest.data.network.repository.ErrorCode
+import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.domain.usercase.GetMovieListUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +20,6 @@ class MainViewModel @Inject constructor(
 ) : BaseNetworkViewModel() {
 
     private val API_NAME_MOVIE_LIST = "API_NAME_MOVIE_LIST"
-
-    private val paging = PagingSource()
 
     private var _movieList : MutableLiveData<ArrayList<Movie>?> = MutableLiveData(null)
     val movieList : LiveData<ArrayList<Movie>?> = _movieList
@@ -49,17 +47,10 @@ class MainViewModel @Inject constructor(
     }
 
     /**
-     * 페이징 초기화
-     */
-    private fun initPaging() {
-        this.paging.init()
-    }
-
-    /**
      * 검색 데이터 초기화
      */
     fun clear() {
-        this.initPaging()
+        this.getMovieListUserCase.initPaging()
         this._movieList.value?.clear()
     }
 
@@ -68,45 +59,37 @@ class MainViewModel @Inject constructor(
      */
     fun search(
         keyword : String,
-        failCallback : ((Int) -> Unit)? = {},
+        failCallback : ((ErrorCode) -> Unit)? = {},
         start : Int = ConstValue.PAGING_DEFAULT_INDEX
     ) {
-        //todo 최초검색어와 다음페이징의 검색어가 다를경우?
-        if (keyword.isEmpty()) {
-            failCallback?.invoke(R.string.last_page)
-            return
-        }
-        if (paging.isEndPage()) {
-            this.lastAlert = true
-            failCallback?.invoke(R.string.last_page)
-            return
-        }
-
         cancelObserver(this.API_NAME_MOVIE_LIST)
         addObserver(
             this.API_NAME_MOVIE_LIST,
-            this.getMovieListUserCase.getMovieList(keyword, start)
+            this.getMovieListUserCase.searchMovieList(keyword, start)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { setLoading(true) }
                 .doAfterTerminate { setLoading(false) }
-                .subscribeWith(object : DisposableSingleObserver<ArrayList<Movie>>() {
-                    override fun onSuccess(t : ArrayList<Movie>?) {
+                .subscribeWith(object : DisposableSingleObserver<BaseResult<ArrayList<Movie>, Any>>() {
+                    override fun onSuccess(t : BaseResult<ArrayList<Movie>, Any>?) {
                         t?.let {
-                            paging.checkNextPage(it)
+                            if (it.isSuccess) {
+                                val list = it.data!!
+                                getMovieListUserCase.checkNextPaging(list)
 
-                            //이전 리스트 뒤에 생성
-                            val combineList = _movieList.value ?: arrayListOf()
-                            combineList.addAll(it)
+                                //이전 리스트 뒤에 생성
+                                val combineList = _movieList.value ?: arrayListOf()
+                                combineList.addAll(list)
 
-                            setMovieList(combineList)
-                        } ?: failCallback?.invoke(R.string.unknown_error)
+                                setMovieList(combineList)
+                            } else {
+                                failCallback?.invoke(it.failCode as ErrorCode)
+                            }
+                        } ?: failCallback?.invoke(ErrorCode.UNKOWN)
                     }
 
                     override fun onError(e : Throwable?) {
-                        e?.let {
-                            failCallback?.invoke(R.string.unknown_error)
-                        }
+                        failCallback?.invoke(ErrorCode.UNKOWN)
                     }
                 })
         )
