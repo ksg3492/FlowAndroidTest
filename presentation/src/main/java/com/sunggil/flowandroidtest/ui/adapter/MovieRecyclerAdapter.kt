@@ -12,14 +12,15 @@ import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
 import com.sunggil.flowandroidtest.ui.viewholder.MovieViewHolder
 import javax.inject.Inject
 
+//todo baseadapter로 리팩토링
 class MovieRecyclerAdapter @Inject constructor() : RecyclerView.Adapter<MovieViewHolder>() {
 
-    private var itemClickListener : OnItemClickListener? = null
+    private var itemClickListener : OnItemClickListener<Movie>? = null
     private val lists = ArrayList<Movie>()
     @Inject
     lateinit var requestManager : RequestManager
 
-    fun setOnItemClickListener(clickListener : OnItemClickListener) {
+    fun setOnItemClickListener(clickListener : OnItemClickListener<Movie>) {
         this.itemClickListener = clickListener
     }
 

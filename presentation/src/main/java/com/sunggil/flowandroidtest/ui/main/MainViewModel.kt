@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.ui
+package com.sunggil.flowandroidtest.ui.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getMovieListUserCase : GetMovieListUserCase
+    private val getMovieListUserCase : GetMovieListUserCase,
 ) : BaseNetworkViewModel() {
 
     private val API_NAME_MOVIE_LIST = "API_NAME_MOVIE_LIST"
@@ -59,7 +59,7 @@ class MainViewModel @Inject constructor(
      */
     fun search(
         keyword : String,
-        failCallback : ((ErrorCode) -> Unit)? = {}
+        failCallback : ((ErrorCode) -> Unit)? = {},
     ) {
         this.searchedKeyword = keyword
 
@@ -101,35 +101,20 @@ class MainViewModel @Inject constructor(
      */
     fun insertKeyword(
         keyword : String,
-        failCallback : ((ErrorCode) -> Unit)? = {}
+        failCallback : ((ErrorCode) -> Unit)? = {},
     ) {
         //먼저 db에 삽입 후 api 통신
         this.getMovieListUserCase.insertKeyword(keyword)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .subscribe {
-                Log.e("SG2","insertKeyword() : $it")
+                Log.e("SG2", "insertKeyword() : $it")
                 if (it == -1L) {
                     //db error?
                     failCallback?.invoke(ErrorCode.DB_FAIL)
                 } else {
                     this.search(keyword, failCallback)
                 }
-            }
-    }
-
-    /**
-     * db에서 keywods 조회
-     */
-    fun selectKeywords(
-        failCallback : ((ErrorCode) -> Unit)? = {}
-    ) {
-        //먼저 db에 삽입 후 api 통신
-        this.getMovieListUserCase.selectKeywords()
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
-            .subscribe {
-                Log.e("SG2","selectKeywords() : ${it}")
             }
     }
 }

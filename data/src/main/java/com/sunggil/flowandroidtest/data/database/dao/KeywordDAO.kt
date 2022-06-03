@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.core.Maybe
 
 @Dao
 interface KeywordDAO {
-    @Query("select * from ${ConstValue.DB_TABLE_NAME} order by ${Column.TIME} ASC")
+    @Query("select * from ${ConstValue.DB_TABLE_NAME} order by ${Column.TIME} DESC limit ${ConstValue.DB_QUERY_LIMIT}")
     fun selectKeyword() : Maybe<List<KeywordEntity>>
 
 

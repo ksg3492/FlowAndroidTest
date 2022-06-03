@@ -1,5 +1,6 @@
-package com.sunggil.flowandroidtest.ui
+package com.sunggil.flowandroidtest.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,8 +22,10 @@ import com.sunggil.flowandroidtest.data.network.ErrorCode
 import com.sunggil.flowandroidtest.databinding.ActivityMainBinding
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.ui.adapter.MovieRecyclerAdapter
+import com.sunggil.flowandroidtest.ui.base.ActivityValue
 import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
 import com.sunggil.flowandroidtest.ui.base.PagingHelper
+import com.sunggil.flowandroidtest.ui.recent.RecentActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -31,8 +34,10 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivityMainBinding
     private val mainViewModel : MainViewModel by viewModels()
+
     @Inject
     lateinit var adapter : MovieRecyclerAdapter
+
     @Inject
     lateinit var pagingHelper : PagingHelper
 
@@ -68,6 +73,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     /**
      * 입력 감지 리스너
      */
+    //todo 쓸지 말지?
     private val textWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence?, start : Int, count : Int, after : Int) {
         }
@@ -123,15 +129,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         override fun onLoadMoreData() {
             Log.e("SG2", "onLoadMoreData...")
             mainViewModel.search(mainViewModel.searchedKeyword, failCallback)
-
-
         }
     }
 
     /**
      * 어댑터 아이템 클릭 리스너
      */
-    private val onItemClickListener = object : OnItemClickListener {
+    private val onItemClickListener = object : OnItemClickListener<Movie> {
         override fun onItemClick(item : Movie) {
             try {
                 val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
@@ -143,20 +147,47 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
+     * 검색 기능
+     */
+    private fun search(keyword : String) {
+        this.pagingHelper.setIsEndItem(false)
+
+        this.mainViewModel.clear()
+        this.mainViewModel.insertKeyword(keyword, failCallback)
+    }
+
+    /**
      * 클릭 리스너
      */
     override fun onClick(v : View?) {
         when (v?.id) {
             binding.btSearch.id -> {
-                val input = binding.etSearch.text.toString()
-
-                this.pagingHelper.setIsEndItem(false)
-
-                this.mainViewModel.clear()
-                this.mainViewModel.insertKeyword(input, failCallback)
+                val keyword = binding.etSearch.text.toString()
+                this.search(keyword)
             }
             binding.btSearchRecent.id -> {
-                this.mainViewModel.selectKeywords()
+                //todo deprecated 정리
+                startActivityForResult(
+                    Intent(this@MainActivity, RecentActivity::class.java),
+                    ActivityValue.RequestCode.RECENT)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
+        when (requestCode) {
+            ActivityValue.RequestCode.RECENT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    data?.extras?.get(ActivityValue.Extra.KEYWORD)?.let {
+                        //pass된 keyword로 새로 검색
+                        val keyword = it as String
+                        binding.etSearch.setText(keyword)
+                        this.search(keyword)
+                    }
+                }
+            }
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
             }
         }
     }

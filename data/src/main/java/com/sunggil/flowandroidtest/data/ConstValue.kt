@@ -8,4 +8,5 @@ object ConstValue {
     const val PAGING_DEFAULT_INDEX = 1
     const val DB_TABLE_NAME = "KeywordTB"
     const val DB_FILE_NAME = "MovieDB"
+    const val DB_QUERY_LIMIT = 10
 }

@@ -11,7 +11,7 @@ import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
 class MovieViewHolder(
     val requestManager : RequestManager,
     val binding : ItemMovieBinding,
-    val itemClickListener : OnItemClickListener?
+    val itemClickListener : OnItemClickListener<Movie>?
 ) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
     fun setItem(item : Movie) {
