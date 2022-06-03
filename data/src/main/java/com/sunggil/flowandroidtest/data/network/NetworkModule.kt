@@ -1,6 +1,5 @@
 package com.sunggil.flowandroidtest.data.network
 
-import android.util.Log
 import com.sunggil.flowandroidtest.data.ConstValue
 import com.sunggil.flowandroidtest.data.Name
 import dagger.Module
@@ -24,7 +23,8 @@ object NetworkModule {
     fun getOkHttpClient() : OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HeaderInterceptor())
-            .addInterceptor(getInterceptor())
+            .addInterceptor(getLoggingInterceptor())
+            .addInterceptor(ResponseInterceptor())
             .connectTimeout(5L, TimeUnit.SECONDS)
             .callTimeout(5L, TimeUnit.SECONDS)
             .build()
@@ -44,7 +44,7 @@ object NetworkModule {
     /**
      * log용 interceptor
      */
-    fun getInterceptor() : HttpLoggingInterceptor {
+    fun getLoggingInterceptor() : HttpLoggingInterceptor {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         return interceptor
@@ -58,6 +58,20 @@ object NetworkModule {
             var newRequestWithToken = chain.request().newBuilder()
             newRequestWithToken = getHeader(newRequestWithToken)
             return chain.proceed(newRequestWithToken.build())
+        }
+    }
+
+    /**
+     * response encoding
+     */
+    class ResponseInterceptor() : Interceptor {
+        override fun intercept(chain : Interceptor.Chain) : Response {
+            val response = chain.proceed(chain.request())
+            val modified = response.newBuilder()
+                .addHeader("Content-Type", "application/json; charset=utf-8")
+                .build()
+
+            return modified
         }
     }
 

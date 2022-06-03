@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
 import com.sunggil.flowandroidtest.R
 import com.sunggil.flowandroidtest.databinding.ItemMovieBinding
 import com.sunggil.flowandroidtest.domain.Movie
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 class MovieRecyclerAdapter @Inject constructor() : RecyclerView.Adapter<MovieViewHolder>() {
     private val lists = ArrayList<Movie>()
+    @Inject lateinit var requestManager : RequestManager
 
     /**
      * 데이터 초기화
@@ -25,7 +27,7 @@ class MovieRecyclerAdapter @Inject constructor() : RecyclerView.Adapter<MovieVie
     override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MovieViewHolder {
         val binding : ItemMovieBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_movie, parent, false)
 
-        return MovieViewHolder(binding)
+        return MovieViewHolder(requestManager, binding)
     }
 
     override fun onBindViewHolder(holder : MovieViewHolder, position : Int) {
