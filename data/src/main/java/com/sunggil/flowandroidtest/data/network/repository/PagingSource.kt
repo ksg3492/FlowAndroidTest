@@ -7,14 +7,14 @@ import com.sunggil.flowandroidtest.data.ConstValue
  */
 class PagingSource(val defaultPageSize : Int = ConstValue.PAGING_DEFAULT_SIZE) {
     private var isEndPage = false
-    private var pageIndex = 0
+    private var pageIndex = ConstValue.PAGING_DEFAULT_INDEX
 
     fun isEndPage() = isEndPage
     fun getPageIndex() = pageIndex
 
     fun init() {
         isEndPage = false
-        pageIndex = 0
+        pageIndex = ConstValue.PAGING_DEFAULT_INDEX
     }
 
     /**

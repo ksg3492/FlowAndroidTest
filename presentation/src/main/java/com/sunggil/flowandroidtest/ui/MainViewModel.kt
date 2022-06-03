@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sunggil.flowandroidtest.R
 import com.sunggil.flowandroidtest.base.BaseNetworkViewModel
+import com.sunggil.flowandroidtest.data.ConstValue
 import com.sunggil.flowandroidtest.data.network.repository.PagingSource
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.domain.usercase.GetMovieListUserCase
@@ -50,8 +51,16 @@ class MainViewModel @Inject constructor(
     /**
      * 페이징 초기화
      */
-    fun initPaging() {
+    private fun initPaging() {
         this.paging.init()
+    }
+
+    /**
+     * 검색 데이터 초기화
+     */
+    fun clear() {
+        this.initPaging()
+        this._movieList.value?.clear()
     }
 
     /**
@@ -60,7 +69,7 @@ class MainViewModel @Inject constructor(
     fun search(
         keyword : String,
         failCallback : ((Int) -> Unit)? = {},
-        start : Int = 0
+        start : Int = ConstValue.PAGING_DEFAULT_INDEX
     ) {
         //todo 최초검색어와 다음페이징의 검색어가 다를경우?
         if (keyword.isEmpty()) {

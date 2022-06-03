@@ -5,4 +5,5 @@ object ConstValue {
     val HEADER_ID = "X-Naver-Client-Id"
     val HEADER_SECRET = "X-Naver-Client-Secret"
     val PAGING_DEFAULT_SIZE = 20
+    val PAGING_DEFAULT_INDEX = 1
 }
