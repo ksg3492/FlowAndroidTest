@@ -1,5 +1,7 @@
 package com.sunggil.flowandroidtest.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,17 +19,22 @@ import com.google.android.material.snackbar.Snackbar
 import com.sunggil.flowandroidtest.R
 import com.sunggil.flowandroidtest.data.network.repository.ErrorCode
 import com.sunggil.flowandroidtest.databinding.ActivityMainBinding
+import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.ui.adapter.MovieRecyclerAdapter
+import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
 import com.sunggil.flowandroidtest.ui.base.PagingHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivityMainBinding
     private val mainViewModel : MainViewModel by viewModels()
-    @Inject lateinit var adapter : MovieRecyclerAdapter
-    @Inject lateinit var pagingHelper : PagingHelper
+    @Inject
+    lateinit var adapter : MovieRecyclerAdapter
+    @Inject
+    lateinit var pagingHelper : PagingHelper
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +50,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         this.binding.rvMovie.adapter = this.adapter
         this.binding.rvMovie.layoutManager = LinearLayoutManager(this)
+        this.adapter.setOnItemClickListener(this.onItemClickListener)
 
         this.pagingHelper.setCallback(this.loadMoreScrollListener)
         this.binding.rvMovie.addOnScrollListener(this.pagingHelper.getScrollListener())
@@ -79,7 +87,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 EditorInfo.IME_ACTION_GO,
                 EditorInfo.IME_ACTION_SEARCH,
                 EditorInfo.IME_ACTION_NEXT,
-                EditorInfo.IME_ACTION_SEND -> {
+                EditorInfo.IME_ACTION_SEND,
+                -> {
                     binding.btSearch.callOnClick()
                     return true
                 }
@@ -99,18 +108,35 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                 R.string.last_page
             }
-            else  -> R.string.unknown_error
+            else -> R.string.unknown_error
         }
 
         Snackbar.make(binding.root, getString(msgId), Snackbar.LENGTH_SHORT).show()
     }
 
+    /**
+     * 페이징 처리 리스너
+     */
     private val loadMoreScrollListener = object : PagingHelper.OnLoadMoreDataCallback {
         override fun onLoadMoreData() {
-            Log.e("SG2","onLoadMoreData...")
+            Log.e("SG2", "onLoadMoreData...")
             mainViewModel.search(mainViewModel.searchedKeyword, failCallback)
 
 
+        }
+    }
+
+    /**
+     * 어댑터 아이템 클릭 리스너
+     */
+    private val onItemClickListener = object : OnItemClickListener {
+        override fun onItemClick(item : Movie) {
+            try {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
+                startActivity(browserIntent)
+            } catch (e : Exception) {
+                Snackbar.make(binding.root, getString(R.string.error_browser), Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 
