@@ -9,5 +9,5 @@ interface MovieRepository {
 
     fun checkNextPage(list : ArrayList<*>)
 
-    fun searchMovieList(keyword : String, start : Int) : Single<BaseResult<ArrayList<Movie>, Any>>
+    fun searchMovieList(keyword : String) : Single<BaseResult<ArrayList<Movie>, Any>>
 }

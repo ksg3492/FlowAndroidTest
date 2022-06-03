@@ -8,6 +8,7 @@ import com.sunggil.flowandroidtest.data.ConstValue
 class PagingSource(val defaultPageSize : Int = ConstValue.PAGING_DEFAULT_SIZE) {
     private var isEndPage = false
     private var pageIndex = ConstValue.PAGING_DEFAULT_INDEX
+    private var total : Int = -1
 
     fun isEndPage() = isEndPage
     fun getPageIndex() = pageIndex
@@ -15,20 +16,27 @@ class PagingSource(val defaultPageSize : Int = ConstValue.PAGING_DEFAULT_SIZE) {
     fun init() {
         isEndPage = false
         pageIndex = ConstValue.PAGING_DEFAULT_INDEX
+        total = -1
+    }
+
+    fun setTotal(total : Int) {
+        this.total = total
     }
 
     /**
      * 다음 페이지 체크
      */
     fun checkNextPage(list : ArrayList<*>) {
-        when {
-            list.isEmpty() || list.size < defaultPageSize -> {
-                //페이징 끝
-                isEndPage = true
-            }
-            list.size >= defaultPageSize -> {
-                //다음 페이지 존재
-                pageIndex++
+        if (list.size >= total) {
+            //페이징 끝
+            isEndPage = true
+        } else {
+            //다음 페이지 존재
+            if (pageIndex + ConstValue.PAGING_DEFAULT_SIZE >= total) {
+                //요청 하는 사이즈가 전체 사이즈를 넘어가면?
+                pageIndex += (total - pageIndex)
+            } else {
+                pageIndex += ConstValue.PAGING_DEFAULT_SIZE
             }
         }
     }

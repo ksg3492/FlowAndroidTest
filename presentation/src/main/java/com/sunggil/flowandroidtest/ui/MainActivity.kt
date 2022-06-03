@@ -18,6 +18,7 @@ import com.sunggil.flowandroidtest.R
 import com.sunggil.flowandroidtest.data.network.repository.ErrorCode
 import com.sunggil.flowandroidtest.databinding.ActivityMainBinding
 import com.sunggil.flowandroidtest.ui.adapter.MovieRecyclerAdapter
+import com.sunggil.flowandroidtest.ui.base.PagingHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -26,26 +27,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivityMainBinding
     private val mainViewModel : MainViewModel by viewModels()
     @Inject lateinit var adapter : MovieRecyclerAdapter
+    @Inject lateinit var pagingHelper : PagingHelper
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.viewModel = mainViewModel
-        binding.lifecycleOwner = this
+        this.binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        this.binding.viewModel = this.mainViewModel
+        this.binding.lifecycleOwner = this
 
-        binding.btSearch.setOnClickListener(this)
-        binding.etSearch.addTextChangedListener(textWatcher)
-        binding.etSearch.setOnEditorActionListener(editorActionListener)
+        this.binding.btSearch.setOnClickListener(this)
+        this.binding.etSearch.setText(this.mainViewModel.searchedKeyword)
+        this.binding.etSearch.addTextChangedListener(textWatcher)
+        this.binding.etSearch.setOnEditorActionListener(editorActionListener)
 
-        binding.rvMovie.adapter = this.adapter
-        binding.rvMovie.layoutManager = LinearLayoutManager(this)
+        this.binding.rvMovie.adapter = this.adapter
+        this.binding.rvMovie.layoutManager = LinearLayoutManager(this)
 
-        mainViewModel.movieList.observe(this, Observer {
+        this.pagingHelper.setCallback(this.loadMoreScrollListener)
+        this.binding.rvMovie.addOnScrollListener(this.pagingHelper.getScrollListener())
+
+        this.mainViewModel.movieList.observe(this, Observer {
             it?.let {
                 this.adapter.setAll(it)
-
-                Log.e("SG2","movie list size : ${it.size}")
+                this.pagingHelper.setIsLoading(false)
             }
         })
     }
@@ -89,13 +94,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val failCallback : ((ErrorCode) -> Unit) = {
         val msgId : Int = when (it) {
             ErrorCode.EMPTY_KEYWORD -> R.string.empty_keyword
-            ErrorCode.LAST_PAGE -> R.string.last_page
+            ErrorCode.LAST_PAGE -> {
+                this.pagingHelper.setIsEndItem(true)
+
+                R.string.last_page
+            }
             else  -> R.string.unknown_error
         }
 
         Snackbar.make(binding.root, getString(msgId), Snackbar.LENGTH_SHORT).show()
     }
 
+    private val loadMoreScrollListener = object : PagingHelper.OnLoadMoreDataCallback {
+        override fun onLoadMoreData() {
+            Log.e("SG2","onLoadMoreData...")
+            mainViewModel.search(mainViewModel.searchedKeyword, failCallback)
+
+
+        }
+    }
 
     /**
      * 클릭 리스너
@@ -105,10 +122,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.btSearch.id -> {
                 val input = binding.etSearch.text.toString()
 
+                this.pagingHelper.setIsEndItem(false)
+
                 this.mainViewModel.clear()
                 this.mainViewModel.search(input, failCallback)
             }
         }
-
     }
 }

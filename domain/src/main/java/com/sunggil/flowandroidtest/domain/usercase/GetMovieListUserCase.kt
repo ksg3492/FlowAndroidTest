@@ -16,7 +16,7 @@ class GetMovieListUserCase(
         this.movieRepository.checkNextPage(list)
     }
 
-    fun searchMovieList(keyword : String, start : Int) : Single<BaseResult<ArrayList<Movie>, Any>> {
-        return this.movieRepository.searchMovieList(keyword, start)
+    fun searchMovieList(keyword : String) : Single<BaseResult<ArrayList<Movie>, Any>> {
+        return this.movieRepository.searchMovieList(keyword)
     }
 }

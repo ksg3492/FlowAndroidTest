@@ -3,7 +3,6 @@ package com.sunggil.flowandroidtest.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sunggil.flowandroidtest.base.BaseNetworkViewModel
-import com.sunggil.flowandroidtest.data.ConstValue
 import com.sunggil.flowandroidtest.data.network.repository.ErrorCode
 import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
@@ -28,9 +27,9 @@ class MainViewModel @Inject constructor(
     val loading : LiveData<Boolean> = _loading
 
     /**
-     * 마지막 포지션 노출 여부
+     * api 요청시 keyword
      */
-    var lastAlert : Boolean = false
+    var searchedKeyword : String = ""
 
     /**
      * 영화 검색 data
@@ -59,13 +58,14 @@ class MainViewModel @Inject constructor(
      */
     fun search(
         keyword : String,
-        failCallback : ((ErrorCode) -> Unit)? = {},
-        start : Int = ConstValue.PAGING_DEFAULT_INDEX
+        failCallback : ((ErrorCode) -> Unit)? = {}
     ) {
+        this.searchedKeyword = keyword
+
         cancelObserver(this.API_NAME_MOVIE_LIST)
         addObserver(
             this.API_NAME_MOVIE_LIST,
-            this.getMovieListUserCase.searchMovieList(keyword, start)
+            this.getMovieListUserCase.searchMovieList(keyword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { setLoading(true) }
@@ -74,12 +74,12 @@ class MainViewModel @Inject constructor(
                     override fun onSuccess(t : BaseResult<ArrayList<Movie>, Any>?) {
                         t?.let {
                             if (it.isSuccess) {
-                                val list = it.data!!
-                                getMovieListUserCase.checkNextPaging(list)
-
                                 //이전 리스트 뒤에 생성
                                 val combineList = _movieList.value ?: arrayListOf()
-                                combineList.addAll(list)
+                                combineList.addAll(it.data!!)
+
+                                //페이징 체크
+                                getMovieListUserCase.checkNextPaging(combineList)
 
                                 setMovieList(combineList)
                             } else {

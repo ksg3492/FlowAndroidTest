@@ -20,10 +20,7 @@ class MovieRepositoryImpl(
         this.paging.checkNextPage(list)
     }
 
-    override fun searchMovieList(
-        keyword : String,
-        start : Int
-    ) : Single<BaseResult<ArrayList<Movie>, Any>> {
+    override fun searchMovieList(keyword : String) : Single<BaseResult<ArrayList<Movie>, Any>> {
         //todo 최초검색어와 다음페이징의 검색어가 다를경우?
         if (keyword.isEmpty()) {
             return Single.just(BaseResult(null, ErrorCode.EMPTY_KEYWORD))
@@ -32,6 +29,10 @@ class MovieRepositoryImpl(
             return Single.just(BaseResult(null, ErrorCode.LAST_PAGE))
         }
 
-        return this.movieApiService.getMovieList(keyword, start).map { BaseResult(it.mapper()) }
+        return this.movieApiService.getMovieList(keyword, paging.getPageIndex()).map {
+            //최대 갯수 설정
+            this.paging.setTotal(it.total)
+            BaseResult(it.mapper())
+        }
     }
 }
