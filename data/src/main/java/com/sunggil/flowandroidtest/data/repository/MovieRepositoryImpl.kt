@@ -30,4 +30,8 @@ class MovieRepositoryImpl(
     override fun insertKeyword(keyword : String) : Maybe<Long> {
         return this.movieLocalDataSource.insertKeyword(keyword)
     }
+
+    override fun deleteKeywords() : Maybe<Int> {
+        return this.movieLocalDataSource.deleteKeywords()
+    }
 }

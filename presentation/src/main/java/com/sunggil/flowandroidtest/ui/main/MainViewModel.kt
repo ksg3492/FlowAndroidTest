@@ -127,4 +127,21 @@ class MainViewModel @Inject constructor(
                 }
             }
     }
+
+    /**
+     * db 10개 이상인 경우 삭제
+     */
+    private fun deleteKeywords() {
+        this.getMovieListUserCase.deleteKeywords()
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe {
+                Log.e("SG2", "deleteKeywords() : $it")
+            }
+    }
+
+    override fun onCleared() {
+        this.deleteKeywords()
+        super.onCleared()
+    }
 }

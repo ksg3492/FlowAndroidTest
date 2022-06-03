@@ -13,4 +13,8 @@ class MovieLocalDataSource(
     fun insertKeyword(keyword : String) : Maybe<Long> {
         return this.movieDataBase.getDatabase()?.insertKeyword(keyword) ?: Maybe.just(-1)
     }
+
+    fun deleteKeywords() : Maybe<Int> {
+        return this.movieDataBase.getDatabase()?.deleteKeywords() ?: Maybe.just(-1)
+    }
 }

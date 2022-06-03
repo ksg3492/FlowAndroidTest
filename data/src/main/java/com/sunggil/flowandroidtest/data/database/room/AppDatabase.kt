@@ -26,4 +26,8 @@ abstract class AppDatabase : RoomDatabase() {
         return this.getKeywordDAO().insertKeyword(KeywordEntity(System.currentTimeMillis(), keyword))
     }
 
+    fun deleteKeywords() : Maybe<Int> {
+        return this.getKeywordDAO().deleteKeywords()
+    }
+
 }

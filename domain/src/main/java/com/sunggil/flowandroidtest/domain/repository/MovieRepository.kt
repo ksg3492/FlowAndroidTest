@@ -15,4 +15,6 @@ interface MovieRepository {
     fun selectKeywords() : Maybe<ArrayList<String>>
 
     fun insertKeyword(keyword : String) : Maybe<Long>
+
+    fun deleteKeywords() : Maybe<Int>
 }

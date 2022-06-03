@@ -28,4 +28,8 @@ class GetMovieListUserCase(
     fun insertKeyword(keyword : String) : Maybe<Long> {
         return this.movieRepository.insertKeyword(keyword)
     }
+
+    fun deleteKeywords() : Maybe<Int> {
+        return this.movieRepository.deleteKeywords()
+    }
 }
