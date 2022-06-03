@@ -2,10 +2,9 @@ package com.sunggil.flowandroidtest.data.database.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.sunggil.flowandroidtest.data.database.dao.SearchedKeywordDAO
+import com.sunggil.flowandroidtest.data.database.dao.KeywordDAO
 import com.sunggil.flowandroidtest.data.database.entity.KeywordEntity
 import com.sunggil.flowandroidtest.data.database.entity.mapper
-import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
 import java.util.*
 
@@ -13,10 +12,10 @@ import java.util.*
     entities = [KeywordEntity::class], version = 1, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun getSearchDAO() : SearchedKeywordDAO
+    abstract fun getKeywordDAO() : KeywordDAO
 
-    fun selectKeywords() : Flowable<ArrayList<String>> {
-        return this.getSearchDAO().selectKeyword().map { list ->
+    fun selectKeywords() : Maybe<ArrayList<String>> {
+        return this.getKeywordDAO().selectKeyword().map { list ->
             list.map {
                 it.mapper()
             } as ArrayList<String>
@@ -24,7 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
     }
 
     fun insertKeyword(keyword : String) : Maybe<Long> {
-        return this.getSearchDAO().insertKeyword(KeywordEntity(System.currentTimeMillis(), keyword))
+        return this.getKeywordDAO().insertKeyword(KeywordEntity(System.currentTimeMillis(), keyword))
     }
 
 }

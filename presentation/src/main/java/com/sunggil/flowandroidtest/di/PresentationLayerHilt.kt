@@ -3,6 +3,7 @@ package com.sunggil.flowandroidtest.di
 import android.content.Context
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.sunggil.flowandroidtest.data.database.MovieDataBase
 import com.sunggil.flowandroidtest.data.network.api.MovieApiService
 import com.sunggil.flowandroidtest.data.repository.MovieLocalDataSource
 import com.sunggil.flowandroidtest.data.repository.MovieRemoteDataSource
@@ -28,8 +29,8 @@ object PresentationLayerHilt {
     }
 
     @Provides
-    fun providesMovieRepository(apiService : MovieApiService) : MovieRepository {
-        return MovieRepositoryImpl(MovieLocalDataSource(), MovieRemoteDataSource(apiService))
+    fun providesMovieRepository(dbService : MovieDataBase, apiService : MovieApiService) : MovieRepository {
+        return MovieRepositoryImpl(MovieLocalDataSource(dbService), MovieRemoteDataSource(apiService))
     }
 
     @Singleton

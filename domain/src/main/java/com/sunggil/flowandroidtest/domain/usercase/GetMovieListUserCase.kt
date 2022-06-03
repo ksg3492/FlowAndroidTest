@@ -3,7 +3,7 @@ package com.sunggil.flowandroidtest.domain.usercase
 import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.domain.repository.MovieRepository
-import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
 
 class GetMovieListUserCase(
@@ -21,11 +21,11 @@ class GetMovieListUserCase(
         return this.movieRepository.searchMovieList(keyword)
     }
 
-    fun selectKeywords() : Flowable<ArrayList<String>> {
+    fun selectKeywords() : Maybe<ArrayList<String>> {
         return this.movieRepository.selectKeywords()
     }
 
-    fun insertKeyword(keyword : String) {
-        this.movieRepository.insertKeyword(keyword)
+    fun insertKeyword(keyword : String) : Maybe<Long> {
+        return this.movieRepository.insertKeyword(keyword)
     }
 }

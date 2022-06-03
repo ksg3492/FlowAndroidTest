@@ -7,4 +7,5 @@ object ConstValue {
     const val PAGING_DEFAULT_SIZE = 10
     const val PAGING_DEFAULT_INDEX = 1
     const val DB_TABLE_NAME = "KeywordTB"
+    const val DB_FILE_NAME = "MovieDB"
 }

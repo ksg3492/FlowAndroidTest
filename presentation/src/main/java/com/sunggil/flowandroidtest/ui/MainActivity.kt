@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         this.binding.lifecycleOwner = this
 
         this.binding.btSearch.setOnClickListener(this)
+        this.binding.btSearchRecent.setOnClickListener(this)
+
         this.binding.etSearch.setText(this.mainViewModel.searchedKeyword)
         this.binding.etSearch.addTextChangedListener(textWatcher)
         this.binding.etSearch.setOnEditorActionListener(editorActionListener)
@@ -151,7 +153,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 this.pagingHelper.setIsEndItem(false)
 
                 this.mainViewModel.clear()
-                this.mainViewModel.search(input, failCallback)
+                this.mainViewModel.insertKeyword(input, failCallback)
+            }
+            binding.btSearchRecent.id -> {
+                this.mainViewModel.selectKeywords()
             }
         }
     }

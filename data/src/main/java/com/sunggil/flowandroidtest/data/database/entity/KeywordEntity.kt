@@ -2,6 +2,7 @@ package com.sunggil.flowandroidtest.data.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.sunggil.flowandroidtest.data.ConstValue
 
@@ -18,6 +19,7 @@ data class KeywordEntity(
 
     @SerializedName("keyword")
     @ColumnInfo(name = Column.KEYWORD)
+    @PrimaryKey()
     var keyword : String
 )
 

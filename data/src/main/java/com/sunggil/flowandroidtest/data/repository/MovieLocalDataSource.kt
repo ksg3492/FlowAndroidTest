@@ -1,20 +1,16 @@
 package com.sunggil.flowandroidtest.data.repository
 
 import com.sunggil.flowandroidtest.data.database.MovieDataBase
-import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Maybe
 
 class MovieLocalDataSource(
-    private val movieDataBase : MovieDataBase
+    private val movieDataBase : MovieDataBase,
 ) {
-    init {
-        this.movieDataBase.openDataBaseFile()
+    fun selectKeywords() : Maybe<ArrayList<String>> {
+        return this.movieDataBase.getDatabase()?.selectKeywords() ?: Maybe.just(arrayListOf())
     }
 
-    fun selectKeywords() : Flowable<ArrayList<String>> {
-        return this.movieDataBase.getDatabase()?.selectKeywords() ?: Flowable.just(arrayListOf())
-    }
-
-    fun insertKeyword(keyword : String) {
-        this.movieDataBase.getDatabase()?.insertKeyword(keyword)
+    fun insertKeyword(keyword : String) : Maybe<Long> {
+        return this.movieDataBase.getDatabase()?.insertKeyword(keyword) ?: Maybe.just(-1)
     }
 }

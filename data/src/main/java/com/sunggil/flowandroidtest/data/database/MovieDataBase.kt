@@ -2,22 +2,21 @@ package com.sunggil.flowandroidtest.data.database
 
 import android.content.Context
 import androidx.room.Room
+import com.sunggil.flowandroidtest.data.ConstValue
 import com.sunggil.flowandroidtest.data.database.room.AppDatabase
 
 
 class MovieDataBase constructor(
-    private val applicationContext : Context,
+    applicationContext : Context,
 ) {
-    private val dbFileName = "MovieDB"
     private var database : AppDatabase? = null
 
-
-    /**
-     * database 파일 load
-     */
-    fun openDataBaseFile() {
-        this.database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, dbFileName).build()
+    init {
+        this.database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, ConstValue.DB_FILE_NAME).build()
     }
 
+    /**
+     * DB 객체 전달
+     */
     fun getDatabase() = database
 }

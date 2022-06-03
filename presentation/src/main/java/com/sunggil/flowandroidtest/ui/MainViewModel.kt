@@ -1,5 +1,6 @@
 package com.sunggil.flowandroidtest.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sunggil.flowandroidtest.base.BaseNetworkViewModel
@@ -42,7 +43,7 @@ class MainViewModel @Inject constructor(
      * 로딩 화면
      */
     fun setLoading(loading : Boolean) {
-        this._loading.value = loading
+        this._loading.postValue(loading)
     }
 
     /**
@@ -95,5 +96,40 @@ class MainViewModel @Inject constructor(
         )
     }
 
+    /**
+     * db에 keyword 추가
+     */
+    fun insertKeyword(
+        keyword : String,
+        failCallback : ((ErrorCode) -> Unit)? = {}
+    ) {
+        //먼저 db에 삽입 후 api 통신
+        this.getMovieListUserCase.insertKeyword(keyword)
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe {
+                Log.e("SG2","insertKeyword() : $it")
+                if (it == -1L) {
+                    //db error?
+                    failCallback?.invoke(ErrorCode.DB_FAIL)
+                } else {
+                    this.search(keyword, failCallback)
+                }
+            }
+    }
 
+    /**
+     * db에서 keywods 조회
+     */
+    fun selectKeywords(
+        failCallback : ((ErrorCode) -> Unit)? = {}
+    ) {
+        //먼저 db에 삽입 후 api 통신
+        this.getMovieListUserCase.selectKeywords()
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe {
+                Log.e("SG2","selectKeywords() : ${it}")
+            }
+    }
 }
