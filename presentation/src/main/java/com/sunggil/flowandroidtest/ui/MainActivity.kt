@@ -17,7 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.sunggil.flowandroidtest.R
-import com.sunggil.flowandroidtest.data.network.repository.ErrorCode
+import com.sunggil.flowandroidtest.data.network.ErrorCode
 import com.sunggil.flowandroidtest.databinding.ActivityMainBinding
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.ui.adapter.MovieRecyclerAdapter

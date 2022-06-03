@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.data.network.repository
+package com.sunggil.flowandroidtest.data.repository
 
 import com.sunggil.flowandroidtest.data.ConstValue
 

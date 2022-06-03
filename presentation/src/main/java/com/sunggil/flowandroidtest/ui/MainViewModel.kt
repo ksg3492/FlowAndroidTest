@@ -3,7 +3,7 @@ package com.sunggil.flowandroidtest.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sunggil.flowandroidtest.base.BaseNetworkViewModel
-import com.sunggil.flowandroidtest.data.network.repository.ErrorCode
+import com.sunggil.flowandroidtest.data.network.ErrorCode
 import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.domain.usercase.GetMovieListUserCase
@@ -94,4 +94,6 @@ class MainViewModel @Inject constructor(
                 })
         )
     }
+
+
 }

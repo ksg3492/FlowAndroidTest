@@ -2,6 +2,7 @@ package com.sunggil.flowandroidtest.domain.repository
 
 import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 
 interface MovieRepository {
@@ -10,4 +11,8 @@ interface MovieRepository {
     fun checkNextPage(list : ArrayList<*>)
 
     fun searchMovieList(keyword : String) : Single<BaseResult<ArrayList<Movie>, Any>>
+
+    fun selectKeywords() : Flowable<ArrayList<String>>
+
+    fun insertKeyword(keyword : String)
 }

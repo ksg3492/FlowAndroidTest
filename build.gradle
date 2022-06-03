@@ -15,6 +15,7 @@ buildscript {
         okhttp_version = "4.9.0"
         retrofit_version = "2.9.0"
         glide_version = "4.13.0"
+        room_version = "2.4.2"
     }
     repositories {
         google()

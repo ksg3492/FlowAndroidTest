@@ -3,10 +3,11 @@ package com.sunggil.flowandroidtest.domain.usercase
 import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.domain.repository.MovieRepository
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 
 class GetMovieListUserCase(
-    private val movieRepository : MovieRepository
+    private val movieRepository : MovieRepository,
 ) {
     fun initPaging() {
         this.movieRepository.initPaging()
@@ -18,5 +19,13 @@ class GetMovieListUserCase(
 
     fun searchMovieList(keyword : String) : Single<BaseResult<ArrayList<Movie>, Any>> {
         return this.movieRepository.searchMovieList(keyword)
+    }
+
+    fun selectKeywords() : Flowable<ArrayList<String>> {
+        return this.movieRepository.selectKeywords()
+    }
+
+    fun insertKeyword(keyword : String) {
+        this.movieRepository.insertKeyword(keyword)
     }
 }

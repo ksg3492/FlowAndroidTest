@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.data.network.repository
+package com.sunggil.flowandroidtest.data.network
 
 enum class ErrorCode(value : Int) {
     EMPTY_KEYWORD(0),

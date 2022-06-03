@@ -4,7 +4,9 @@ import android.content.Context
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.sunggil.flowandroidtest.data.network.api.MovieApiService
-import com.sunggil.flowandroidtest.data.network.repository.MovieRepositoryImpl
+import com.sunggil.flowandroidtest.data.repository.MovieLocalDataSource
+import com.sunggil.flowandroidtest.data.repository.MovieRemoteDataSource
+import com.sunggil.flowandroidtest.data.repository.MovieRepositoryImpl
 import com.sunggil.flowandroidtest.domain.repository.MovieRepository
 import com.sunggil.flowandroidtest.domain.usercase.GetMovieListUserCase
 import dagger.Module
@@ -27,7 +29,7 @@ object PresentationLayerHilt {
 
     @Provides
     fun providesMovieRepository(apiService : MovieApiService) : MovieRepository {
-        return MovieRepositoryImpl(apiService)
+        return MovieRepositoryImpl(MovieLocalDataSource(), MovieRemoteDataSource(apiService))
     }
 
     @Singleton
@@ -45,3 +47,4 @@ object GlideHilt {
         return Glide.with(context)
     }
 }
+
