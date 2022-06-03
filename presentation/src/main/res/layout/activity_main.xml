@@ -11,37 +11,56 @@
         android:layout_height="match_parent"
         >
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/et_search"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/bt_search"
-            android:maxLines="1"
-            />
+            >
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/bt_search"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            app:layout_constraintStart_toEndOf="@id/et_search"
-            app:layout_constraintEnd_toStartOf="@id/bt_search_recent"
-            app:layout_constraintTop_toTopOf="@id/et_search"
-            app:layout_constraintBottom_toBottomOf="@id/et_search"
-            android:text="@string/search"
-            />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_search"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/bt_search"
+                android:maxLines="1"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
+                />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/bt_search_recent"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            app:layout_constraintStart_toEndOf="@id/bt_search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/et_search"
-            app:layout_constraintBottom_toBottomOf="@id/et_search"
-            android:text="@string/search_recent"
-            />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_search"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toEndOf="@id/et_search"
+                app:layout_constraintEnd_toStartOf="@id/bt_search_recent"
+                app:layout_constraintTop_toTopOf="@id/et_search"
+                app:layout_constraintBottom_toBottomOf="@id/et_search"
+                android:text="@string/search"
+                />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_search_recent"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toEndOf="@id/bt_search"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/et_search"
+                app:layout_constraintBottom_toBottomOf="@id/et_search"
+                android:text="@string/search_recent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_movie"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginVertical="10dp"
+            app:layout_constraintTop_toBottomOf="@id/layout_top"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
