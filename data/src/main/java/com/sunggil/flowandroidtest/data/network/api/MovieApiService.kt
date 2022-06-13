@@ -13,4 +13,11 @@ interface MovieApiService {
         @Query("start") start: Int = ConstValue.PAGING_DEFAULT_INDEX,
         @Query("display") display: Int = ConstValue.PAGING_DEFAULT_SIZE,
     ) : Single<MovieResponse>
+
+    @GET("/v1/search/movie.json")
+    suspend fun getMovieListByCoroutine(
+        @Query("query") query: String,
+        @Query("start") start: Int = ConstValue.PAGING_DEFAULT_INDEX,
+        @Query("display") display: Int = ConstValue.PAGING_DEFAULT_SIZE,
+    ) : MovieResponse
 }

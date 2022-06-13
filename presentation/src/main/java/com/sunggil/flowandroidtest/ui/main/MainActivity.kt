@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val loadMoreScrollListener = object : PagingHelper.OnLoadMoreDataCallback {
         override fun onLoadMoreData() {
             Log.e("SG2", "onLoadMoreData...")
-            mainViewModel.search(mainViewModel.searchedKeyword, failCallback)
+            mainViewModel.searchByCoroutine(mainViewModel.searchedKeyword, failCallback)
         }
     }
 

@@ -19,4 +19,8 @@ class GetMovieListUseCase(
     fun searchMovieList(keyword : String) : Single<BaseResult<ArrayList<Movie>, Any>> {
         return this.movieRepository.searchMovieList(keyword)
     }
+
+    suspend fun searchMovieListByCoroutine(keyword : String) : Result<ArrayList<Movie>> {
+        return this.movieRepository.searchMovieListByCoroutine(keyword)
+    }
 }

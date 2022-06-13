@@ -1,10 +1,13 @@
 package com.sunggil.flowandroidtest.ui.main
 
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.sunggil.flowandroidtest.base.BaseNetworkViewModel
 import com.sunggil.flowandroidtest.data.network.ErrorCode
+import com.sunggil.flowandroidtest.domain.BaseException
 import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.domain.usercase.GetKeywordsUserCase
@@ -13,6 +16,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -104,6 +110,45 @@ class MainViewModel @Inject constructor(
     }
 
     /**
+     * 영화 리스트 검색
+     */
+    fun searchByCoroutine(
+        keyword : String,
+        failCallback : ((ErrorCode) -> Unit)? = {},
+    ) {
+        if (keyword.isEmpty()) {
+            failCallback?.invoke(ErrorCode.EMPTY_KEYWORD)
+            return
+        }
+
+        this.searchedKeyword = keyword
+
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.e("SG2","searchByCoroutine Main? 1 : ${Looper.getMainLooper() == Looper.myLooper()}")
+            val result = getMovieListUseCase.searchMovieListByCoroutine(keyword)
+
+            withContext(Dispatchers.Main) {
+                Log.e("SG2","searchByCoroutine Main? 2 : ${Looper.getMainLooper() == Looper.myLooper()}")
+                if (result.isSuccess) {
+                    //이전 리스트 뒤에 생성
+                    val combineList = _movieList.value ?: arrayListOf()
+                    combineList.addAll(result.getOrNull() ?: arrayListOf())
+
+                    //페이징 체크
+                    getMovieListUseCase.checkNextPaging(combineList)
+
+                    setMovieList(combineList)
+                } else {
+                    result.exceptionOrNull()?.let {
+                        val exception = it as BaseException
+                        failCallback?.invoke(exception.errorCode as ErrorCode)
+                    }?: failCallback?.invoke(ErrorCode.UNKOWN)
+                }
+            }
+        }
+    }
+
+    /**
      * db에 keyword 추가
      */
     fun insertKeyword(
@@ -125,7 +170,7 @@ class MainViewModel @Inject constructor(
                     //db error?
                     failCallback?.invoke(ErrorCode.DB_FAIL)
                 } else {
-                    this.search(keyword, failCallback)
+                    this.searchByCoroutine(keyword, failCallback)
                 }
             }
     }

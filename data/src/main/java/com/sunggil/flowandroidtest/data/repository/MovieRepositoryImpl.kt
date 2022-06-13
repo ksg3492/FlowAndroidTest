@@ -20,4 +20,8 @@ class MovieRepositoryImpl(
     override fun searchMovieList(keyword : String) : Single<BaseResult<ArrayList<Movie>, Any>> {
         return this.movieRemoteDataSource.searchMovieList(keyword)
     }
+
+    override suspend fun searchMovieListByCoroutine(keyword : String) : Result<ArrayList<Movie>> {
+        return this.movieRemoteDataSource.searchMovieListByCoroutine(keyword)
+    }
 }
