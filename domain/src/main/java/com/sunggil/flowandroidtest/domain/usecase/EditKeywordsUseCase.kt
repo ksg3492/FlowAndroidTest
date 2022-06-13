@@ -1,16 +1,11 @@
-package com.sunggil.flowandroidtest.domain.usercase
+package com.sunggil.flowandroidtest.domain.usecase
 
 import com.sunggil.flowandroidtest.domain.repository.KeywordRepository
 import io.reactivex.rxjava3.core.Maybe
 
-class GetKeywordsUserCase(
+class EditKeywordsUseCase(
     private val keywordRepository : KeywordRepository,
 ) {
-
-    fun selectKeywords() : Maybe<ArrayList<String>> {
-        return this.keywordRepository.selectKeywords()
-    }
-
     fun insertKeyword(keyword : String) : Maybe<Long> {
         return this.keywordRepository.insertKeyword(keyword)
     }

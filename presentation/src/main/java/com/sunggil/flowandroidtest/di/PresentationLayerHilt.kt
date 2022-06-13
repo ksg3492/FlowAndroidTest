@@ -11,8 +11,9 @@ import com.sunggil.flowandroidtest.data.repository.MovieRemoteDataSource
 import com.sunggil.flowandroidtest.data.repository.MovieRepositoryImpl
 import com.sunggil.flowandroidtest.domain.repository.KeywordRepository
 import com.sunggil.flowandroidtest.domain.repository.MovieRepository
-import com.sunggil.flowandroidtest.domain.usercase.GetKeywordsUserCase
-import com.sunggil.flowandroidtest.domain.usercase.GetMovieListUseCase
+import com.sunggil.flowandroidtest.domain.usecase.EditKeywordsUseCase
+import com.sunggil.flowandroidtest.domain.usecase.GetKeywordsUseCase
+import com.sunggil.flowandroidtest.domain.usecase.GetMovieListUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,13 +26,18 @@ import dagger.hilt.components.SingletonComponent
 object PresentationLayerHilt {
 
     @Provides
-    fun providesGetMovieListUserCase(repository : MovieRepository) : GetMovieListUseCase {
+    fun providesGetMovieListUseCase(repository : MovieRepository) : GetMovieListUseCase {
         return GetMovieListUseCase(repository)
     }
 
     @Provides
-    fun providesGetKeywordsUserCase(repository : KeywordRepository) : GetKeywordsUserCase {
-        return GetKeywordsUserCase(repository)
+    fun providesGetKeywordsUseCase(repository : KeywordRepository) : GetKeywordsUseCase {
+        return GetKeywordsUseCase(repository)
+    }
+
+    @Provides
+    fun providesEditKeywordsUseCase(repository : KeywordRepository) : EditKeywordsUseCase {
+        return EditKeywordsUseCase(repository)
     }
 
     @Provides

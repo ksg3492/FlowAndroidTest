@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.domain.usercase
+package com.sunggil.flowandroidtest.domain.usecase
 
 import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
