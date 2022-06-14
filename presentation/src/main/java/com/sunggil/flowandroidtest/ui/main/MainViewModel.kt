@@ -1,6 +1,5 @@
 package com.sunggil.flowandroidtest.ui.main
 
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +10,6 @@ import com.sunggil.flowandroidtest.domain.BaseException
 import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.domain.usecase.EditKeywordsUseCase
-import com.sunggil.flowandroidtest.domain.usecase.GetKeywordsUseCase
 import com.sunggil.flowandroidtest.domain.usecase.GetMovieListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -25,7 +23,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getMovieListUseCase : GetMovieListUseCase,
-    private val getKeywordsUseCase : GetKeywordsUseCase,
     private val editKeywordsUseCase : EditKeywordsUseCase,
 ) : BaseNetworkViewModel() {
 
@@ -126,11 +123,9 @@ class MainViewModel @Inject constructor(
         this.searchedKeyword = keyword
 
         viewModelScope.launch(Dispatchers.IO) {
-            Log.e("SG2","searchByCoroutine Main? 1 : ${Looper.getMainLooper() == Looper.myLooper()}")
             val result = getMovieListUseCase.searchMovieListByCoroutine(keyword)
 
             withContext(Dispatchers.Main) {
-                Log.e("SG2","searchByCoroutine Main? 2 : ${Looper.getMainLooper() == Looper.myLooper()}")
                 if (result.isSuccess) {
                     //이전 리스트 뒤에 생성
                     val combineList = _movieList.value ?: arrayListOf()
@@ -144,7 +139,7 @@ class MainViewModel @Inject constructor(
                     result.exceptionOrNull()?.let {
                         val exception = it as BaseException
                         failCallback?.invoke(exception.errorCode as ErrorCode)
-                    }?: failCallback?.invoke(ErrorCode.UNKOWN)
+                    } ?: failCallback?.invoke(ErrorCode.UNKOWN)
                 }
             }
         }
