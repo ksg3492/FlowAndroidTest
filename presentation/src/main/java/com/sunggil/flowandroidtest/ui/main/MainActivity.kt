@@ -11,6 +11,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -71,12 +72,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    /**
+     * Activity Result
+     */
+    private val recentResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            it.data?.extras?.get(ActivityValue.Extra.KEYWORD)?.let {
+                //pass된 keyword로 새로 검색
+                val keyword = it as String
+                binding.etSearch.setText(keyword)
+                this.search(keyword)
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -191,28 +198,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 this.hideKeyboard()
             }
             binding.btSearchRecent.id -> {
-                //todo deprecated 정리
-                startActivityForResult(
-                    Intent(this@MainActivity, RecentActivity::class.java),
-                    ActivityValue.RequestCode.RECENT)
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
-        when (requestCode) {
-            ActivityValue.RequestCode.RECENT -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    data?.extras?.get(ActivityValue.Extra.KEYWORD)?.let {
-                        //pass된 keyword로 새로 검색
-                        val keyword = it as String
-                        binding.etSearch.setText(keyword)
-                        this.search(keyword)
-                    }
-                }
-            }
-            else -> {
-                super.onActivityResult(requestCode, resultCode, data)
+                this.recentResultLauncher.launch(Intent(this@MainActivity, RecentActivity::class.java))
             }
         }
     }
