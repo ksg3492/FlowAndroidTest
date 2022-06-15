@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.ui.recent
+package com.sunggil.flowandroidtest.ui.recentactivity
 
 import android.app.Activity
 import android.content.Intent

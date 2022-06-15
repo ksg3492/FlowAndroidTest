@@ -7,7 +7,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.sunggil.flowandroidtest.ui.main.databinding.ActivityMain2Binding
+import com.sunggil.flowandroidtest.R
+import com.sunggil.flowandroidtest.databinding.ActivityMain2Binding
 
 class MainActivity2 : AppCompatActivity() {
 
@@ -25,7 +26,7 @@ class MainActivity2 : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
+            R.id.navigation_search, R.id.navigation_recent, R.id.navigation_favorite))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

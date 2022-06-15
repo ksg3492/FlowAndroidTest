@@ -26,7 +26,7 @@ import com.sunggil.flowandroidtest.ui.adapter.MovieRecyclerAdapter
 import com.sunggil.flowandroidtest.ui.base.ActivityValue
 import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
 import com.sunggil.flowandroidtest.ui.base.PagingHelper
-import com.sunggil.flowandroidtest.ui.recent.RecentActivity
+import com.sunggil.flowandroidtest.ui.recentactivity.RecentActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.recent.RecentActivity" />
+        <activity android:name=".ui.recentactivity.RecentActivity" />
     </application>
 
 </manifest>
