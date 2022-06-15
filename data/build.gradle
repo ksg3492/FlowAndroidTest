@@ -8,7 +8,7 @@ plugins {
 
 android {
     compileSdkVersion compile_version
-    buildToolsVersion build_tools_version
+//    buildToolsVersion build_tools_version
 
     defaultConfig {
         minSdkVersion min_sdk_version
@@ -45,7 +45,7 @@ dependencies {
     implementation project(":domain")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation "androidx.core:core-ktx:$core_ktx"
 
     // retrofit + okhttp
     implementation("com.squareup.okhttp3:okhttp:$okhttp_version")
