@@ -1,8 +1,8 @@
-package com.sunggil.flowandroidtest.ui.recentactivity
+package com.sunggil.flowandroidtest.ui.fragment.recent
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.sunggil.flowandroidtest.base.BaseViewModel
 import com.sunggil.flowandroidtest.domain.usecase.GetKeywordsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -12,13 +12,10 @@ import javax.inject.Inject
 @HiltViewModel
 class RecentViewModel @Inject constructor(
     private val getKeywordUseCase : GetKeywordsUseCase,
-) : ViewModel() {
+) : BaseViewModel() {
 
     private var _recentList : MutableLiveData<ArrayList<String>?> = MutableLiveData(null)
     val recentList : LiveData<ArrayList<String>?> = _recentList
-
-    private var _loading : MutableLiveData<Boolean> = MutableLiveData(false)
-    val loading : LiveData<Boolean> = _loading
 
     /**
      * 최근 검색 data
@@ -28,16 +25,9 @@ class RecentViewModel @Inject constructor(
     }
 
     /**
-     * 로딩 화면
-     */
-    fun setLoading(loading : Boolean) {
-        this._loading.postValue(loading)
-    }
-
-    /**
      * db에서 keywods 조회
      */
-    fun selectKeywords() {
+    fun selectKeywords(keyword : String?) {
         this.getKeywordUseCase.selectKeywords()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

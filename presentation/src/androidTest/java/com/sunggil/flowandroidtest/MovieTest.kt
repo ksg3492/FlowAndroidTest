@@ -7,7 +7,7 @@ import com.sunggil.flowandroidtest.data.network.ErrorCode
 import com.sunggil.flowandroidtest.domain.BaseException
 import com.sunggil.flowandroidtest.domain.usecase.EditKeywordsUseCase
 import com.sunggil.flowandroidtest.domain.usecase.GetMovieListUseCase
-import com.sunggil.flowandroidtest.ui.main.MainViewModel
+import com.sunggil.flowandroidtest.ui.activity.main.MainViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking

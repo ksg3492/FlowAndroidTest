@@ -1,42 +1,33 @@
-package com.sunggil.flowandroidtest.ui.main
+package com.sunggil.flowandroidtest.ui.fragment.search
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
+import com.sunggil.flowandroidtest.NavigationArgument
 import com.sunggil.flowandroidtest.R
 import com.sunggil.flowandroidtest.data.network.ErrorCode
-import com.sunggil.flowandroidtest.databinding.ActivityMainBinding
+import com.sunggil.flowandroidtest.databinding.FragmentSearchBinding
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.ui.adapter.MovieRecyclerAdapter
-import com.sunggil.flowandroidtest.ui.base.ActivityValue
+import com.sunggil.flowandroidtest.ui.base.BaseFragment
 import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
 import com.sunggil.flowandroidtest.ui.base.PagingHelper
-import com.sunggil.flowandroidtest.ui.recentactivity.RecentActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var binding : ActivityMainBinding
-    private val mainViewModel : MainViewModel by viewModels()
-    private var snackbar : Snackbar? = null
-    private var snackbarText : String? = null
+class SearchFragment : BaseFragment<FragmentSearchBinding>(), View.OnClickListener {
+
+    private val searchViewModel : SearchViewModel by viewModels()
 
     @Inject
     lateinit var adapter : MovieRecyclerAdapter
@@ -44,68 +35,54 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     @Inject
     lateinit var pagingHelper : PagingHelper
 
-    override fun onCreate(savedInstanceState : Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var needToSearch = false
 
-        this.binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        this.binding.viewModel = this.mainViewModel
-        this.binding.lifecycleOwner = this
+    override fun getLayout() : Int = R.layout.fragment_search
+
+    override fun setContentView() {
+        this.binding.viewModel = this.searchViewModel
+
+        this.parseArguments()
 
         this.binding.btSearch.setOnClickListener(this)
-        this.binding.btSearchRecent.setOnClickListener(this)
 
-        this.binding.etSearch.setText(this.mainViewModel.searchedKeyword)
+        this.binding.etSearch.setText(this.searchViewModel.searchedKeyword)
         this.binding.etSearch.setOnEditorActionListener(editorActionListener)
 
         this.binding.rvMovie.adapter = this.adapter
-        this.binding.rvMovie.layoutManager = LinearLayoutManager(this)
+        this.binding.rvMovie.layoutManager = LinearLayoutManager(requireContext())
         this.adapter.setOnItemClickListener(this.onItemClickListener)
 
         this.pagingHelper.setCallback(this.loadMoreScrollListener)
         this.binding.rvMovie.addOnScrollListener(this.pagingHelper.getScrollListener())
 
-        this.mainViewModel.movieList.observe(this, Observer {
+        this.searchViewModel.movieList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 this.adapter.setAll(it)
                 this.pagingHelper.setIsLoading(false)
             }
         })
+
+        //Navigation으로 넘어온 검색어가 있을 경우, 검색 프로세스 진행
+        if (this.needToSearch) {
+            this.needToSearch = false
+            this.search(this.searchViewModel.searchedKeyword)
+        }
     }
 
     /**
-     * Activity Result
+     * Arguments 파싱
      */
-    private val recentResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == Activity.RESULT_OK) {
-            it.data?.extras?.get(ActivityValue.Extra.KEYWORD)?.let {
-                //pass된 keyword로 새로 검색
-                val keyword = it as String
-                binding.etSearch.setText(keyword)
-                this.search(keyword)
+    private fun parseArguments() {
+        arguments?.let {
+            if (it.containsKey(NavigationArgument.ARGUMENT_KEYWORD)) {  //검색 키워드
+                val keyword = it.getString(NavigationArgument.ARGUMENT_KEYWORD)
+                if (keyword.isNullOrEmpty().not()) {
+                    this.searchViewModel.searchedKeyword = keyword!!
+                    this.needToSearch = true
+                }
             }
         }
-    }
-
-    override fun onBackPressed() {
-        this.appFinishDelay()
-    }
-
-    /**
-     * 취소키로 종료 기능
-     */
-    private fun appFinishDelay() {
-        val exitString = getString(R.string.snackbar_msg_app_exit)
-        if (this.snackbar?.isShown == true && (exitString == snackbarText)) {
-            finish()
-        } else {
-            this.showSnackbar(exitString)
-        }
-    }
-
-    private fun showSnackbar(msg : String) {
-        this.snackbarText = msg
-        this.snackbar = Snackbar.make(this.binding.root, msg, Snackbar.LENGTH_SHORT)
-        this.snackbar?.show()
     }
 
     /**
@@ -151,7 +128,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val loadMoreScrollListener = object : PagingHelper.OnLoadMoreDataCallback {
         override fun onLoadMoreData() {
             Log.e("SG2", "onLoadMoreData...")
-            mainViewModel.searchByCoroutine(mainViewModel.searchedKeyword, failCallback)
+            searchViewModel.search(searchViewModel.searchedKeyword, failCallback)
         }
     }
 
@@ -175,15 +152,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun search(keyword : String) {
         this.pagingHelper.setIsEndItem(false)
 
-        this.mainViewModel.clear()
-        this.mainViewModel.insertKeyword(keyword, failCallback)
+        this.searchViewModel.clear()
+        this.searchViewModel.insertKeyword(keyword, failCallback)
     }
 
     /**
      * 키보드 숨김
      */
     fun hideKeyboard() {
-        val inputManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputManager = this.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
     }
 
@@ -196,9 +173,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val keyword = binding.etSearch.text.toString()
                 this.search(keyword)
                 this.hideKeyboard()
-            }
-            binding.btSearchRecent.id -> {
-                this.recentResultLauncher.launch(Intent(this@MainActivity, RecentActivity::class.java))
             }
         }
     }

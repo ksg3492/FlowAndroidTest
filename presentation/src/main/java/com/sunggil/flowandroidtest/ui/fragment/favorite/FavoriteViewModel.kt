@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.ui.favorite
+package com.sunggil.flowandroidtest.ui.fragment.favorite
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

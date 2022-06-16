@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.sunggil.flowandroidtest.ui.main.MainViewModel" />
+            type="com.sunggil.flowandroidtest.ui.activity.main.MainViewModel" />
 
         <import type="android.view.View"/>
     </data>

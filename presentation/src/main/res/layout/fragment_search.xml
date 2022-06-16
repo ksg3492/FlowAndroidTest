@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.sunggil.flowandroidtest.ui.search.SearchViewModel" />
+            type="com.sunggil.flowandroidtest.ui.fragment.search.SearchViewModel" />
 
         <import type="android.view.View"/>
     </data>
@@ -43,22 +43,12 @@
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 app:layout_constraintStart_toEndOf="@id/et_search"
-                app:layout_constraintEnd_toStartOf="@id/bt_search_recent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/et_search"
                 app:layout_constraintBottom_toBottomOf="@id/et_search"
                 android:text="@string/search"
                 />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/bt_search_recent"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                app:layout_constraintStart_toEndOf="@id/bt_search"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/et_search"
-                app:layout_constraintBottom_toBottomOf="@id/et_search"
-                android:text="@string/search_recent"
-                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView

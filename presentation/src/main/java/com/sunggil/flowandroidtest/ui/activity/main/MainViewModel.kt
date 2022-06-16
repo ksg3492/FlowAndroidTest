@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.ui.search
+package com.sunggil.flowandroidtest.ui.activity.main
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -21,17 +21,15 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val getMovieListUseCase : GetMovieListUseCase,
     private val editKeywordsUseCase : EditKeywordsUseCase,
 ) : BaseNetworkViewModel() {
+
     private val API_NAME_MOVIE_LIST = "API_NAME_MOVIE_LIST"
 
     private var _movieList : MutableLiveData<ArrayList<Movie>?> = MutableLiveData(null)
     val movieList : LiveData<ArrayList<Movie>?> = _movieList
-
-    private var _loading : MutableLiveData<Boolean> = MutableLiveData(false)
-    val loading : LiveData<Boolean> = _loading
 
     /**
      * api 요청시 keyword
@@ -43,13 +41,6 @@ class SearchViewModel @Inject constructor(
      */
     fun setMovieList(list : ArrayList<Movie>) {
         this._movieList.value = list
-    }
-
-    /**
-     * 로딩 화면
-     */
-    fun setLoading(loading : Boolean) {
-        this._loading.postValue(loading)
     }
 
     /**

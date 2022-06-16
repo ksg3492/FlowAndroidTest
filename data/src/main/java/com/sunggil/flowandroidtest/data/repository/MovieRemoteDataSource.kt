@@ -7,9 +7,13 @@ import com.sunggil.flowandroidtest.domain.BaseException
 import com.sunggil.flowandroidtest.domain.BaseResult
 import com.sunggil.flowandroidtest.domain.Movie
 import io.reactivex.rxjava3.core.Single
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MovieRemoteDataSource(
-    private val movieApiService : MovieApiService
+    private val movieApiService : MovieApiService,
+    private val defaultDispatcher : CoroutineDispatcher = Dispatchers.IO
 ) {
 
     private val paging = PagingSource()
@@ -45,7 +49,9 @@ class MovieRemoteDataSource(
             return Result.failure(BaseException(ErrorCode.LAST_PAGE))
         }
 
-        val response = this.movieApiService.getMovieListByCoroutine(keyword, paging.getPageIndex())
+        val response = withContext(defaultDispatcher) {
+            movieApiService.getMovieListByCoroutine(keyword, paging.getPageIndex())
+        }
         //최대 갯수 설정
         this.paging.setTotal(response.total)
         return Result.success(response.mapper())

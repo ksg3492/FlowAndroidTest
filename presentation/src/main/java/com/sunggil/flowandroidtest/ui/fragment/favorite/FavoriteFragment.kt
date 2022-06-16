@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.ui.favorite
+package com.sunggil.flowandroidtest.ui.fragment.favorite
 
 import androidx.fragment.app.viewModels
 import com.sunggil.flowandroidtest.R

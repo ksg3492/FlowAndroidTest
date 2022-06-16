@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.ui.main
+package com.sunggil.flowandroidtest.ui.activity.main
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -9,7 +9,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.sunggil.flowandroidtest.R
 import com.sunggil.flowandroidtest.databinding.ActivityMain2Binding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity2 : AppCompatActivity() {
 
     private lateinit var binding : ActivityMain2Binding
