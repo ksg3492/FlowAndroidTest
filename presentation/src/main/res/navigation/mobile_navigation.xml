@@ -15,6 +15,9 @@
             android:name="keyword"
             app:argType="string"
             android:defaultValue=""/>
+        <action
+            android:id="@+id/action_navigation_search_to_navigation_detail"
+            app:destination="@id/navigation_detail" />
     </fragment>
 
     <fragment
@@ -26,6 +29,9 @@
         <action
             android:id="@+id/action_navigation_recent_to_navigation_search"
             app:destination="@id/navigation_search" />
+        <action
+            android:id="@+id/action_navigation_recent_to_navigation_detail"
+            app:destination="@id/navigation_detail" />
 
     </fragment>
 
@@ -33,5 +39,28 @@
         android:id="@+id/navigation_favorite"
         android:name="com.sunggil.flowandroidtest.ui.fragment.favorite.FavoriteFragment"
         android:label="@string/title_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_navigation_favorite_to_navigation_detail"
+            app:destination="@id/navigation_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_detail"
+        android:name="com.sunggil.flowandroidtest.ui.fragment.detail.DetailFragment"
+        android:label="@string/title_detail"
+        tools:layout="@layout/fragment_detail" >
+
+        <argument
+            android:name="image"
+            app:argType="string"
+            android:defaultValue="" />
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="" />
+
+    </fragment>
+
 </navigation>

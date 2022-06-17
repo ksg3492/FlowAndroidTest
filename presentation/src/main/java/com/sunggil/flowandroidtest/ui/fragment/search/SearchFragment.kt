@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sunggil.flowandroidtest.NavigationArgument
 import com.sunggil.flowandroidtest.R
@@ -137,12 +138,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), View.OnClickListen
      */
     private val onItemClickListener = object : OnItemClickListener<Movie> {
         override fun onItemClick(item : Movie) {
-            try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
-                startActivity(browserIntent)
-            } catch (e : Exception) {
-                showSnackbar(getString(R.string.error_browser))
-            }
+            val action = SearchFragmentDirections.actionNavigationSearchToNavigationDetail(item.image, item.title)
+            findNavController().navigate(action)
+
+//            try {
+//                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
+//                startActivity(browserIntent)
+//            } catch (e : Exception) {
+//                showSnackbar(getString(R.string.error_browser))
+//            }
         }
     }
 

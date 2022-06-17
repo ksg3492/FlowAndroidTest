@@ -23,5 +23,6 @@
     <string name="title_activity_main2">MainActivity</string>
     <string name="title_search">검색</string>
     <string name="title_favorite">즐겨찾기</string>
+    <string name="title_detail">상세정보</string>
 
 </resources>
