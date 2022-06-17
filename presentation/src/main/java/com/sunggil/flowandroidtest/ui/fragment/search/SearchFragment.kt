@@ -83,6 +83,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), View.OnClickListen
                     this.needToSearch = true
                 }
             }
+            it.clear()
         }
     }
 

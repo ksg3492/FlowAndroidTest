@@ -1,5 +1,6 @@
 package com.sunggil.flowandroidtest.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -39,6 +40,16 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         Log.e("SG2", "${this.javaClass.name} onViewCreated()")
         super.onViewCreated(view, savedInstanceState)
         this.setContentView()
+    }
+
+    override fun onAttach(context : Context) {
+        Log.e("SG2", "${this.javaClass.name} onAttach()")
+        super.onAttach(context)
+    }
+
+    override fun onDetach() {
+        Log.e("SG2", "${this.javaClass.name} onDetach()")
+        super.onDetach()
     }
 
     protected fun showSnackbar(msg : String) {
