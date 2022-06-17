@@ -152,7 +152,6 @@ class MainViewModel @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .subscribe {
-                Log.e("SG2", "insertKeyword() : $it")
                 if (it == -1L) {
                     //db error?
                     failCallback?.invoke(ErrorCode.DB_FAIL)

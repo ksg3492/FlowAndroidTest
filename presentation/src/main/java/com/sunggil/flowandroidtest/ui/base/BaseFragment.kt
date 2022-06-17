@@ -19,6 +19,11 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     abstract fun getLayout() : Int
     abstract fun setContentView()
 
+    override fun onCreate(savedInstanceState : Bundle?) {
+        Log.e("SG2", "${this.javaClass.name} onCreate()")
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater : LayoutInflater,
         container : ViewGroup?,
@@ -46,5 +51,10 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         Log.e("SG2", "${this.javaClass.name} onDestroyView()")
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDestroy() {
+        Log.e("SG2", "${this.javaClass.name} onDestroy()")
+        super.onDestroy()
     }
 }
