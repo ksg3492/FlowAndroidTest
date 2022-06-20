@@ -6,6 +6,7 @@ import com.sunggil.flowandroidtest.domain.repository.MovieRepository
 import io.reactivex.rxjava3.core.Single
 
 class MovieRepositoryImpl(
+    private val favoriteLocalDataSource : FavoriteLocalDataSource,
     private val movieRemoteDataSource : MovieRemoteDataSource,
 ) : MovieRepository {
 

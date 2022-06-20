@@ -6,12 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import com.sunggil.flowandroidtest.data.ConstValue
 
-object Column {
-    const val KEYWORD = "keyword"
-    const val TIME = "time"
-}
-
-@Entity(tableName = ConstValue.DB_TABLE_NAME)
+@Entity(tableName = ConstValue.DB_TABLE_NAME_KEYWORD)
 data class KeywordEntity(
     @SerializedName("time")
     @ColumnInfo(name = Column.TIME)
@@ -19,9 +14,14 @@ data class KeywordEntity(
 
     @SerializedName("keyword")
     @ColumnInfo(name = Column.KEYWORD)
-    @PrimaryKey()
+    @PrimaryKey
     var keyword : String
-)
+) {
+    object Column {
+        const val KEYWORD = "keyword"
+        const val TIME = "time"
+    }
+}
 
 fun KeywordEntity.mapper() : String {
     return this.keyword
