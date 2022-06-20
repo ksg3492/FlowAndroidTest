@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Observer
 import com.bumptech.glide.RequestManager
 import com.sunggil.flowandroidtest.NavigationArgument
@@ -26,11 +28,12 @@ class DetailActivity
     override fun getLayout() : Int = R.layout.activity_detail
 
     override fun setContentView() {
+        this.binding.viewModel = detailViewModel
+
         this.parseArguments()
 
         setSupportActionBar(this.binding.toolbar)
         this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
 
         this.detailViewModel.movie.observe(this, Observer {
             it?.let {
@@ -40,7 +43,18 @@ class DetailActivity
                     .into(this.binding.ivThumb)
 
                 this.binding.tvTitle.text = it.title
+
+                this.detailViewModel.checkFavorite()
             }
+        })
+
+        this.detailViewModel.isFavorite.observe(this, Observer {
+            val color = if (it == true) {
+                R.color.yellow
+            } else {
+                R.color.gray
+            }
+            ImageViewCompat.setImageTintList(this.binding.ibFavorite, ContextCompat.getColorStateList(this@DetailActivity, color))
         })
 
         this.binding.ibFavorite.setOnClickListener(this)
@@ -61,10 +75,19 @@ class DetailActivity
         }
     }
 
+    private fun showSnackbar(toggle : Boolean) {
+        val msg = if (toggle) {
+            getString(R.string.snackbar_msg_favorite_insert)
+        } else {
+            getString(R.string.snackbar_msg_favorite_delete)
+        }
+        this.showSnackbar(msg)
+    }
+
     override fun onClick(v : View?) {
         when (v?.id) {
             this.binding.ibFavorite.id -> {
-
+                this.detailViewModel.toggleFavorite(::showSnackbar)
             }
             this.binding.ibUrl.id -> {
                 try {

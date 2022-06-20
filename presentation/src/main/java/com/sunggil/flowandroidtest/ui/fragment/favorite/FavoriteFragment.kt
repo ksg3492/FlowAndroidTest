@@ -35,7 +35,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>() {
         })
 
         //db 에서 조회
-        this.favoriteViewModel.getFavorites()
+        this.favoriteViewModel.getFavoriteList()
     }
 
     /**

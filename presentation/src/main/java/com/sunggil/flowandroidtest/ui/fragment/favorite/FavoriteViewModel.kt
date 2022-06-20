@@ -15,24 +15,24 @@ class FavoriteViewModel @Inject constructor(
     private val getFavoriteUseCase : GetFavoriteUseCase
 ) : BaseViewModel() {
 
-    private var _favorites : MutableLiveData<ArrayList<Movie>?> = MutableLiveData(null)
-    val favorites : LiveData<ArrayList<Movie>?> = _favorites
+    private var _favoriteList : MutableLiveData<ArrayList<Movie>?> = MutableLiveData(null)
+    val favorites : LiveData<ArrayList<Movie>?> = _favoriteList
 
-    fun setFavorites(list : ArrayList<Movie>?) {
-        this._favorites.value = list
+    fun setFavoriteList(list : ArrayList<Movie>?) {
+        this._favoriteList.value = list
     }
 
     /**
      * 리스트 조회
      */
-    fun getFavorites() {
+    fun getFavoriteList() {
         this.getFavoriteUseCase.selectMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { setLoading(true) }
             .doAfterTerminate { setLoading(false) }
             .subscribe {
-                this.setFavorites(it)
+                this.setFavoriteList(it)
             }
     }
 }
