@@ -2,7 +2,6 @@ package com.sunggil.flowandroidtest.ui.fragment.search
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -11,13 +10,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sunggil.flowandroidtest.NavigationArgument
 import com.sunggil.flowandroidtest.R
 import com.sunggil.flowandroidtest.data.network.ErrorCode
 import com.sunggil.flowandroidtest.databinding.FragmentSearchBinding
 import com.sunggil.flowandroidtest.domain.Movie
+import com.sunggil.flowandroidtest.ui.activity.detail.DetailActivity
 import com.sunggil.flowandroidtest.ui.adapter.MovieRecyclerAdapter
 import com.sunggil.flowandroidtest.ui.base.BaseFragment
 import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
@@ -139,8 +138,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), View.OnClickListen
      */
     private val onItemClickListener = object : OnItemClickListener<Movie> {
         override fun onItemClick(item : Movie) {
-            val action = SearchFragmentDirections.actionNavigationSearchToNavigationDetail(item.image, item.title)
-            findNavController().navigate(action)
+            //Detail Activity
+            val intent = Intent(requireContext(), DetailActivity::class.java).apply {
+                putExtra(NavigationArgument.ARGUMENT_IMAGE, item.image)
+                putExtra(NavigationArgument.ARGUMENT_TITLE, item.title)
+            }
+            startActivity(intent)
 
 //            try {
 //                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))

@@ -13,18 +13,22 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FlowAndroidTest">
+        android:theme="@style/Theme.FlowAndroidTest.NoActionBar">
         <activity
             android:name="com.sunggil.flowandroidtest.ui.activity.main.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.FlowAndroidTest">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.activity.detail.DetailActivity"
+            android:exported="true"
+            android:label="@string/title_detail"/>
     </application>
 
 </manifest>

@@ -1,26 +1,30 @@
-package com.sunggil.flowandroidtest.ui.fragment.detail
+package com.sunggil.flowandroidtest.ui.activity.detail
 
-import androidx.fragment.app.viewModels
+import androidx.activity.viewModels
 import com.bumptech.glide.RequestManager
 import com.sunggil.flowandroidtest.NavigationArgument
 import com.sunggil.flowandroidtest.R
-import com.sunggil.flowandroidtest.databinding.FragmentDetailBinding
-import com.sunggil.flowandroidtest.ui.base.BaseFragment
+import com.sunggil.flowandroidtest.databinding.ActivityDetailBinding
+import com.sunggil.flowandroidtest.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DetailFragment : BaseFragment<FragmentDetailBinding>() {
+class DetailActivity : BaseActivity<ActivityDetailBinding>(TransitionMode.HORIZON) {
 
     private val detailViewModel : DetailViewModel by viewModels()
 
     @Inject
     lateinit var requestManager : RequestManager
 
-    override fun getLayout() : Int = R.layout.fragment_detail
+    override fun getLayout() : Int = R.layout.activity_detail
 
     override fun setContentView() {
         this.parseArguments()
+
+        setSupportActionBar(this.binding.toolbar)
+        this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        this.supportActionBar?.title = getString(R.string.title_detail)
 
         this.requestManager.load(this.detailViewModel.imageUrl)
             .centerCrop()
@@ -34,7 +38,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
      * Arguments 파싱
      */
     private fun parseArguments() {
-        arguments?.let {
+        intent?.extras?.let {
             if (it.containsKey(NavigationArgument.ARGUMENT_IMAGE)) {
                 val image = it.getString(NavigationArgument.ARGUMENT_IMAGE)
                 if (image.isNullOrEmpty().not()) {

@@ -1,28 +1,20 @@
 package com.sunggil.flowandroidtest.ui.activity.main
 
-import android.os.Bundle
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.NavigationUI.setupWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sunggil.flowandroidtest.R
-import com.sunggil.flowandroidtest.databinding.ActivityMain2Binding
+import com.sunggil.flowandroidtest.databinding.ActivityMainBinding
+import com.sunggil.flowandroidtest.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>(TransitionMode.NONE) {
 
-    private lateinit var binding : ActivityMain2Binding
+    override fun getLayout() : Int = R.layout.activity_main
 
-    override fun onCreate(savedInstanceState : Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = ActivityMain2Binding.inflate(layoutInflater)
-        setContentView(binding.root)
-
+    override fun setContentView() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main2)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -31,15 +23,16 @@ class MainActivity : AppCompatActivity() {
             null,
             ::onSupportNavigateUp
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        setupWithNavController(this.binding.toolbar, navController, appBarConfiguration)
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
-                R.id.navigation_detail -> {
-                    binding.navView.visibility = View.GONE
+                R.id.navigation_search -> {
                 }
-                else -> {
-                    binding.navView.visibility = View.VISIBLE
+                R.id.navigation_favorite -> {
+                }
+                R.id.navigation_detail -> {
                 }
             }
         }

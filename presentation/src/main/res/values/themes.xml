@@ -14,9 +14,14 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.FlowAndroidTest.NoActionBar">
+    <style name="Theme.FlowAndroidTest.NoActionBar" parent="Theme.FlowAndroidTest">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="FlowActionBar" parent="Theme.FlowAndroidTest">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnPrimary</item>
     </style>
 
     <style name="Theme.FlowAndroidTest.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
