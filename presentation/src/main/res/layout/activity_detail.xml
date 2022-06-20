@@ -39,6 +39,26 @@
             android:textStyle="bold"
             />
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/ic_baseline_web_24"
+            android:scaleType="fitCenter"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toEndOf="@id/ib_url"
+            android:src="@drawable/ic_baseline_star_24"
+            android:scaleType="fitCenter"
+            />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

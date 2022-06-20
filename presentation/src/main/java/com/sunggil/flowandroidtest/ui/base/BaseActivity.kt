@@ -5,6 +5,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.google.android.material.snackbar.Snackbar
 import com.sunggil.flowandroidtest.R
 
 /**
@@ -15,6 +16,8 @@ abstract class BaseActivity<VB : ViewDataBinding>(
 ) : AppCompatActivity() {
     private var _binding : VB? = null
     protected val binding get() = _binding!!
+    private var snackbar : Snackbar? = null
+    private var snackbarText : String? = null
 
     abstract fun getLayout() : Int
     abstract fun setContentView()
@@ -65,6 +68,12 @@ abstract class BaseActivity<VB : ViewDataBinding>(
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    protected fun showSnackbar(msg : String) {
+        this.snackbarText = msg
+        this.snackbar = Snackbar.make(findViewById(android.R.id.content), msg, Snackbar.LENGTH_SHORT)
+        this.snackbar?.show()
     }
 
     enum class TransitionMode {

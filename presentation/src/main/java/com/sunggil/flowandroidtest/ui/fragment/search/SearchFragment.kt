@@ -140,8 +140,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), View.OnClickListen
         override fun onItemClick(item : Movie) {
             //Detail Activity
             val intent = Intent(requireContext(), DetailActivity::class.java).apply {
-                putExtra(NavigationArgument.ARGUMENT_IMAGE, item.image)
-                putExtra(NavigationArgument.ARGUMENT_TITLE, item.title)
+                putExtra(NavigationArgument.ARGUMENT_MOVIE, item)
             }
             startActivity(intent)
 
