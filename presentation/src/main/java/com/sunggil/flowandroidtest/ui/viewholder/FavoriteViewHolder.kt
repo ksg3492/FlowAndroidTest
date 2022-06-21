@@ -35,6 +35,9 @@ class FavoriteViewHolder(
             binding.ibClose.id -> {
                 this.itemClickListener?.onItemClick(ClickType.DELETE, v.tag as Movie)
             }
+            else -> {
+                super.onClick(v)
+            }
         }
     }
 }
