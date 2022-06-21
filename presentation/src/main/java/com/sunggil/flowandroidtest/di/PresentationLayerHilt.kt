@@ -9,10 +9,7 @@ import com.sunggil.flowandroidtest.data.repository.*
 import com.sunggil.flowandroidtest.domain.repository.FavoriteRepository
 import com.sunggil.flowandroidtest.domain.repository.KeywordRepository
 import com.sunggil.flowandroidtest.domain.repository.MovieRepository
-import com.sunggil.flowandroidtest.domain.usecase.EditKeywordsUseCase
-import com.sunggil.flowandroidtest.domain.usecase.GetFavoriteUseCase
-import com.sunggil.flowandroidtest.domain.usecase.GetKeywordsUseCase
-import com.sunggil.flowandroidtest.domain.usecase.GetMovieListUseCase
+import com.sunggil.flowandroidtest.domain.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,6 +39,11 @@ object PresentationLayerHilt {
     @Provides
     fun providesGetFavoriteUseCase(repository : FavoriteRepository) : GetFavoriteUseCase {
         return GetFavoriteUseCase(repository)
+    }
+
+    @Provides
+    fun providesEditFavoriteUseCase(repository : FavoriteRepository) : EditFavoriteUseCase {
+        return EditFavoriteUseCase(repository)
     }
 
     @Provides

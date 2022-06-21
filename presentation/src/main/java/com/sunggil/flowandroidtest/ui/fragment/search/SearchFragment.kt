@@ -19,6 +19,7 @@ import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.ui.activity.detail.DetailActivity
 import com.sunggil.flowandroidtest.ui.adapter.MovieRecyclerAdapter
 import com.sunggil.flowandroidtest.ui.base.BaseFragment
+import com.sunggil.flowandroidtest.ui.base.ClickType
 import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
 import com.sunggil.flowandroidtest.ui.base.PagingHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -137,19 +138,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(), View.OnClickListen
      * 어댑터 아이템 클릭 리스너
      */
     private val onItemClickListener = object : OnItemClickListener<Movie> {
-        override fun onItemClick(item : Movie) {
-            //Detail Activity
-            val intent = Intent(requireContext(), DetailActivity::class.java).apply {
-                putExtra(NavigationArgument.ARGUMENT_MOVIE, item)
+        override fun onItemClick(type : ClickType, item : Movie) {
+            when (type) {
+                ClickType.ROOT -> {
+                    //Detail Activity
+                    val intent = Intent(requireContext(), DetailActivity::class.java).apply {
+                        putExtra(NavigationArgument.ARGUMENT_MOVIE, item)
+                    }
+                    startActivity(intent)
+                }
             }
-            startActivity(intent)
-
-//            try {
-//                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
-//                startActivity(browserIntent)
-//            } catch (e : Exception) {
-//                showSnackbar(getString(R.string.error_browser))
-//            }
         }
     }
 

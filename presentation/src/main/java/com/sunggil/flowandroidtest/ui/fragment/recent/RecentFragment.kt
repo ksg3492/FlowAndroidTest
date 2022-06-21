@@ -8,6 +8,7 @@ import com.sunggil.flowandroidtest.R
 import com.sunggil.flowandroidtest.databinding.FragmentRecentBinding
 import com.sunggil.flowandroidtest.ui.adapter.RecentRecyclerAdapter
 import com.sunggil.flowandroidtest.ui.base.BaseFragment
+import com.sunggil.flowandroidtest.ui.base.ClickType
 import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -45,9 +46,13 @@ class RecentFragment : BaseFragment<FragmentRecentBinding>() {
      * 어댑터 아이템 클릭 리스너
      */
     private val onItemClickListener = object : OnItemClickListener<String> {
-        override fun onItemClick(item : String) {
-            val action = RecentFragmentDirections.actionNavigationRecentToNavigationSearch(item)
-            findNavController().navigate(action)
+        override fun onItemClick(type : ClickType, item : String) {
+            when (type) {
+                ClickType.ROOT -> {
+                    val action = RecentFragmentDirections.actionNavigationRecentToNavigationSearch(item)
+                    findNavController().navigate(action)
+                }
+            }
         }
     }
 }

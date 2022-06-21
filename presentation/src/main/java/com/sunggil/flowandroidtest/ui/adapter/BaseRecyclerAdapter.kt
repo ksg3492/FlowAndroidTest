@@ -26,6 +26,8 @@ abstract class BaseRecyclerAdapter<T, VB : ViewBinding, VH : BaseViewHolder<T, V
         notifyDataSetChanged()
     }
 
+    fun getAll() = lists
+
     override fun onBindViewHolder(holder : VH, position : Int) {
         this.lists[position]?.let {
             holder.setItem(it)

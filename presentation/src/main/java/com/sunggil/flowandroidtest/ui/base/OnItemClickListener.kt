@@ -1,7 +1,10 @@
 package com.sunggil.flowandroidtest.ui.base
 
-import com.sunggil.flowandroidtest.domain.Movie
-
 interface OnItemClickListener<T> {
-    fun onItemClick(item : T)
+    fun onItemClick(type : ClickType, item : T)
+}
+
+enum class ClickType(value : Int) {
+    ROOT(0),
+    DELETE(1),
 }

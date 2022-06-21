@@ -19,7 +19,7 @@ class MovieRecyclerAdapter @Inject constructor() : BaseRecyclerAdapter<Movie, It
 
     override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MovieViewHolder {
         val binding : ItemMovieBinding =
-            DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_movie, parent, false)
+            DataBindingUtil.inflate(LayoutInflater.from(parent.context), getLayout(), parent, false)
 
         return MovieViewHolder(requestManager, binding, itemClickListener)
     }

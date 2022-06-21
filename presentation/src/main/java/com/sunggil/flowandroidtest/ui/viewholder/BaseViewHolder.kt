@@ -3,6 +3,7 @@ package com.sunggil.flowandroidtest.ui.viewholder
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.sunggil.flowandroidtest.ui.base.ClickType
 import com.sunggil.flowandroidtest.ui.base.OnItemClickListener
 
 abstract class BaseViewHolder<T, VB : ViewBinding>(
@@ -16,6 +17,6 @@ abstract class BaseViewHolder<T, VB : ViewBinding>(
     }
 
     override fun onClick(v : View?) {
-        this._itemClickListener?.onItemClick(v?.tag as T)
+        this._itemClickListener?.onItemClick(ClickType.ROOT, v?.tag as T)
     }
 }

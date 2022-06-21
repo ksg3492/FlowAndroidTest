@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sunggil.flowandroidtest.base.BaseViewModel
 import com.sunggil.flowandroidtest.domain.Movie
+import com.sunggil.flowandroidtest.domain.usecase.EditFavoriteUseCase
 import com.sunggil.flowandroidtest.domain.usecase.GetFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getFavoriteUseCase : GetFavoriteUseCase
+    private val getFavoriteUseCase : GetFavoriteUseCase,
+    private val editFavoriteUseCase : EditFavoriteUseCase
 ) : BaseViewModel() {
 
     private var _movie : MutableLiveData<Movie?> = MutableLiveData(null)
@@ -38,9 +40,9 @@ class DetailViewModel @Inject constructor(
         val toggle = this._isFavorite.value == true
 
         if (toggle) {
-            this.getFavoriteUseCase.deleteMovie(this._movie.value!!)
+            this.editFavoriteUseCase.deleteMovie(this._movie.value!!)
         } else {
-            this.getFavoriteUseCase.insertMovie(this._movie.value!!)
+            this.editFavoriteUseCase.insertMovie(this._movie.value!!)
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
