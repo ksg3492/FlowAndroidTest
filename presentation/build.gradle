@@ -129,13 +129,16 @@ dependencies {
     implementation "androidx.activity:activity-compose:$activity_compose_version"
         // Integration with ViewModels
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$viewmodel_compose_version"
+        // Navigation
+    implementation "androidx.navigation:navigation-compose:$navigation_version"
         // Integration with observables
     implementation "androidx.compose.runtime:runtime-livedata:$jetpack_compose_version"
     implementation "androidx.compose.runtime:runtime-rxjava2:$jetpack_compose_version"
         // UI Tests
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$jetpack_compose_version"
         // Preview
-    debugImplementation "androidx.compose.ui:ui-tooling:$jetpack_compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$jetpack_compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$jetpack_compose_version"
+
 
 }

@@ -2,7 +2,6 @@ package com.sunggil.flowandroidtest.ui.activity.choice
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -12,7 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sunggil.flowandroidtest.ui.activity.main.MainActivity
+import com.sunggil.flowandroidtest.ui.activity.main.ComposeMainActivity
+import com.sunggil.flowandroidtest.ui.activity.main.XmlMainActivity
 
 class ChoiceActivity : ComponentActivity() {
 
@@ -21,9 +21,10 @@ class ChoiceActivity : ComponentActivity() {
 
         setContent {
             val onXmlClickCallback : () -> Unit = {
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, XmlMainActivity::class.java))
             }
             val onJetpackClickCallback : () -> Unit = {
+                startActivity(Intent(this, ComposeMainActivity::class.java))
             }
 
             ChoiceXmlORCompose(onXmlClickCallback, onJetpackClickCallback)
