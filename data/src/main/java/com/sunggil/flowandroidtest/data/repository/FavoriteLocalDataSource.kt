@@ -2,6 +2,7 @@ package com.sunggil.flowandroidtest.data.repository
 
 import com.sunggil.flowandroidtest.data.database.MovieDataBase
 import com.sunggil.flowandroidtest.domain.Movie
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
 
 class FavoriteLocalDataSource(
@@ -11,8 +12,8 @@ class FavoriteLocalDataSource(
         return this.movieDataBase.getDatabase()?.selectMovie(id) ?: Maybe.just(null)
     }
 
-    fun selectMovies() : Maybe<ArrayList<Movie>> {
-        return this.movieDataBase.getDatabase()?.selectMovies() ?: Maybe.just(arrayListOf())
+    fun selectMovies() : Flowable<ArrayList<Movie>> {
+        return this.movieDataBase.getDatabase()?.selectMovies() ?: Flowable.just(arrayListOf())
     }
 
     fun insertMovie(movie : Movie) : Maybe<Long> {

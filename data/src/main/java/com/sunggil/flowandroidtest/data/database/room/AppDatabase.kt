@@ -8,6 +8,7 @@ import com.sunggil.flowandroidtest.data.database.entity.KeywordEntity
 import com.sunggil.flowandroidtest.data.database.entity.MovieEntity
 import com.sunggil.flowandroidtest.data.database.entity.mapper
 import com.sunggil.flowandroidtest.domain.Movie
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
 
 @Database(
@@ -43,7 +44,7 @@ abstract class AppDatabase : RoomDatabase() {
         return this.getMovieDAO().selectMovie(id).map { it.mapper() }
     }
 
-    fun selectMovies() : Maybe<ArrayList<Movie>> {
+    fun selectMovies() : Flowable<ArrayList<Movie>> {
         return this.getMovieDAO().selectMovies().map { list ->
             list.map {
                 it.mapper()

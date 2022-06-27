@@ -2,6 +2,7 @@ package com.sunggil.flowandroidtest.domain.usecase
 
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.domain.repository.FavoriteRepository
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
 
 class GetFavoriteUseCase(
@@ -11,7 +12,7 @@ class GetFavoriteUseCase(
         return this.favoriteRepository.selectMovie(id)
     }
 
-    fun selectMovies() : Maybe<ArrayList<Movie>> {
+    fun selectMovies() : Flowable<ArrayList<Movie>> {
         return this.favoriteRepository.selectMovies()
     }
 }

@@ -2,6 +2,7 @@ package com.sunggil.flowandroidtest.data.repository
 
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.domain.repository.FavoriteRepository
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
 
 class FavoriteRepositoryImpl(
@@ -11,7 +12,7 @@ class FavoriteRepositoryImpl(
         return this.favoriteLocalDataSource.selectMovie(id)
     }
 
-    override fun selectMovies() : Maybe<ArrayList<Movie>> {
+    override fun selectMovies() : Flowable<ArrayList<Movie>> {
         return this.favoriteLocalDataSource.selectMovies()
     }
 

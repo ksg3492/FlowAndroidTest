@@ -1,13 +1,16 @@
 package com.sunggil.flowandroidtest.ui.fragment.favorite
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.sunggil.flowandroidtest.base.BaseNetworkViewModel
 import com.sunggil.flowandroidtest.base.BaseViewModel
 import com.sunggil.flowandroidtest.domain.Movie
 import com.sunggil.flowandroidtest.domain.usecase.EditFavoriteUseCase
 import com.sunggil.flowandroidtest.domain.usecase.GetFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -15,7 +18,9 @@ import javax.inject.Inject
 class FavoriteViewModel @Inject constructor(
     private val getFavoriteUseCase : GetFavoriteUseCase,
     private val editFavoriteUseCase : EditFavoriteUseCase
-) : BaseViewModel() {
+) : BaseNetworkViewModel() {
+
+    private val flowDisposable : CompositeDisposable = CompositeDisposable()
 
     private var _favoriteList : MutableLiveData<ArrayList<Movie>?> = MutableLiveData(null)
     val favorites : LiveData<ArrayList<Movie>?> = _favoriteList
@@ -28,14 +33,18 @@ class FavoriteViewModel @Inject constructor(
      * 리스트 조회
      */
     fun getFavoriteList() {
-        this.getFavoriteUseCase.selectMovies()
+        this.flowDisposable.add(
+            this.getFavoriteUseCase.selectMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { setLoading(true) }
             .doAfterTerminate { setLoading(false) }
             .subscribe {
+                Log.e("SG2","getFavoriteList subscribe ${it.size}")
                 this.setFavoriteList(it)
+                setLoading(false)
             }
+        )
     }
 
     /**
@@ -56,5 +65,12 @@ class FavoriteViewModel @Inject constructor(
                     successCallback?.invoke(movie)
                 }
             }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        //flowable dispose
+        this.flowDisposable.clear()
     }
 }
