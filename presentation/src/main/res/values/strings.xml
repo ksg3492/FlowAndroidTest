@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">FlowAndroidTest</string>
+
+    <string name="title_activity_main">MainActivity</string>
+
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -11,20 +14,20 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="search">검색</string>
-    <string name="search_recent">최근검색</string>
     <string name="unknown_error">검색에 실패하였습니다.</string>
     <string name="last_page">마지막 페이지입니다.</string>
     <string name="empty_keyword">검색어를 입력해주세요.</string>
 
     <string name="error_browser">페이지 로드를 실패하였습니다.</string>
-    <string name="title_recent">최근 검색 이력</string>
     <string name="error_database">데이터베이스를 불러올 수 없습니다.</string>
     <string name="snackbar_msg_app_exit">한번 더 취소키를 누르면 앱이 종료됩니다.</string>
     <string name="title_search">검색</string>
+    <string name="title_recent">최근검색</string>
     <string name="title_favorite">즐겨찾기</string>
     <string name="title_detail">상세정보</string>
 
     <string name="snackbar_msg_favorite_insert">즐겨찾기에 추가되었습니다.</string>
     <string name="snackbar_msg_favorite_delete">즐겨찾기에서 삭제되었습니다.</string>
+    <string name="title_activity_compose_main">ComposeMainActivity</string>
 
 </resources>

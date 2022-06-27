@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/navigation_recent"
         android:name="com.sunggil.flowandroidtest.ui.fragment.recent.RecentFragment"
-        android:label="@string/search_recent"
+        android:label="@string/title_recent"
         tools:layout="@layout/fragment_recent" >
 
         <action

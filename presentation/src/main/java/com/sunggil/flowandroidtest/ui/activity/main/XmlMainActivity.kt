@@ -10,7 +10,7 @@ import com.sunggil.flowandroidtest.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>(TransitionMode.NONE) {
+class XmlMainActivity : BaseActivity<ActivityMainBinding>(TransitionMode.NONE) {
 
     override fun getLayout() : Int = R.layout.activity_main
 
@@ -30,9 +30,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(TransitionMode.NONE) {
             when (destination.id) {
                 R.id.navigation_search -> {
                 }
-                R.id.navigation_favorite -> {
+                R.id.navigation_recent -> {
                 }
-                R.id.navigation_detail -> {
+                R.id.navigation_favorite -> {
                 }
             }
         }
