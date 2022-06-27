@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.navigation
+package com.sunggil.flowandroidtest.ui.compose.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

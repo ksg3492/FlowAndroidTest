@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.navigation
+package com.sunggil.flowandroidtest.ui.compose.navigation
 
 //Navigation Group
 sealed class NavigationGroup(val group : String) {

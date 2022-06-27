@@ -1,4 +1,4 @@
-package com.sunggil.flowandroidtest.navigation
+package com.sunggil.flowandroidtest.ui.compose.navigation
 
 import androidx.compose.material.Text
 import androidx.navigation.NavGraphBuilder
@@ -12,15 +12,15 @@ fun NavGraphBuilder.mainGraph() {
     ) {
         //Search
         composable(route = NavigationGroup.Main.SCREEN_SEARCH) {
-            Text(text = "SCREEN_SEARCH")
+            Text(text = "SCREEN_SEARCH ${it.destination.route}")
         }
         //RECENT
         composable(route = NavigationGroup.Main.SCREEN_RECENT) {
-            Text(text = "SCREEN_RECENT")
+            Text(text = "SCREEN_RECENT ${it.destination.route}")
         }
         //FAVORITE
         composable(route = NavigationGroup.Main.SCREEN_FAVORITE) {
-            Text(text = "SCREEN_FAVORITE")
+            Text(text = "SCREEN_FAVORITE ${it.destination.route}")
         }
     }
 }

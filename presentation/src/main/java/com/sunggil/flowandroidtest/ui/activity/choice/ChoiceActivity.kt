@@ -45,24 +45,22 @@ fun ChoiceXmlORCompose(
     ) {
         Button(
             onClick = onXmlClickCallback,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         ) {
-            Text(
-                "XML 로 시작하기",
-                modifier = Modifier.padding(vertical = 10.dp),
-            )
+            Text("XML 로 시작하기")
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
         Button(
             onClick = onJetpackClickCallback,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         ) {
-            Text(
-                "Jetpack Compose 로 시작하기",
-                modifier = Modifier.padding(vertical = 10.dp)
-            )
+            Text("Jetpack Compose 로 시작하기")
         }
     }
 }
