@@ -1,6 +1,9 @@
 package com.sunggil.flowandroidtest.ui.fragment.search
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -29,6 +32,9 @@ class SearchViewModel @Inject constructor(
     private var _movieList : MutableLiveData<ArrayList<Movie>?> = MutableLiveData(null)
     val movieList : LiveData<ArrayList<Movie>?> = _movieList
 
+    private var _movieListState : MutableState<ArrayList<Movie>?> = mutableStateOf(null)
+    val movieListState : State<ArrayList<Movie>?> = _movieListState
+
     /**
      * api 요청시 keyword
      */
@@ -39,6 +45,13 @@ class SearchViewModel @Inject constructor(
      */
     fun setMovieList(list : ArrayList<Movie>) {
         this._movieList.value = list
+    }
+
+    /**
+     * 영화 검색 data (Flow)
+     */
+    fun setMovieListState(list : ArrayList<Movie>) {
+        this._movieListState.value = list
     }
 
     /**
@@ -77,6 +90,7 @@ class SearchViewModel @Inject constructor(
                 getMovieListUseCase.checkNextPaging(combineList)
 
                 setMovieList(combineList)
+                setMovieListState(combineList)
             } else {
                 result.exceptionOrNull()?.let {
                     val exception = it as BaseException

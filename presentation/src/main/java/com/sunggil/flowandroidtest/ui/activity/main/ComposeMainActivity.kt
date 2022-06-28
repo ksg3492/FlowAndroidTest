@@ -14,7 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import com.sunggil.flowandroidtest.ui.compose.navigation.MainBottomNavigation
 import com.sunggil.flowandroidtest.ui.compose.navigation.NavigationGroup
 import com.sunggil.flowandroidtest.ui.compose.navigation.mainGraph
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ComposeMainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -24,11 +26,6 @@ class ComposeMainActivity : ComponentActivity() {
             val navController = rememberNavController()
             MainScreen(navController)
         }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
     }
 }
 
