@@ -35,7 +35,7 @@ fun SearchScreen(
     val coroutineScope = rememberCoroutineScope()
     val inputText = rememberSaveable { mutableStateOf("") }
 
-    val dataState = viewModel.movieListState.value
+    val dataState = viewModel.movieListState
     val keyboardController = LocalSoftwareKeyboardController.current
 
 
@@ -83,7 +83,7 @@ fun SearchScreen(
                     keyboardController?.hide()
 
                     viewModel.clear()
-                    viewModel.search(inputText.value)
+                    viewModel.searchCompose(inputText.value)
                     coroutineScope.launch {
                         // Display the snackbar on the screen. `showSnackbar` is a function
                         // that suspends until the snackbar disappears from the screen

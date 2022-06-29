@@ -1,9 +1,8 @@
 package com.sunggil.flowandroidtest.ui.fragment.search
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -32,8 +31,8 @@ class SearchViewModel @Inject constructor(
     private var _movieList : MutableLiveData<ArrayList<Movie>?> = MutableLiveData(null)
     val movieList : LiveData<ArrayList<Movie>?> = _movieList
 
-    private var _movieListState : MutableState<ArrayList<Movie>?> = mutableStateOf(null)
-    val movieListState : State<ArrayList<Movie>?> = _movieListState
+    var movieListState = mutableStateListOf<Movie>()
+        private set
 
     /**
      * api 요청시 keyword
@@ -48,18 +47,12 @@ class SearchViewModel @Inject constructor(
     }
 
     /**
-     * 영화 검색 data (Flow)
-     */
-    fun setMovieListState(list : ArrayList<Movie>) {
-        this._movieListState.value = list
-    }
-
-    /**
      * 검색 데이터 초기화
      */
     fun clear() {
         this.getMovieListUseCase.initPaging()
         this._movieList.value?.clear()
+        this.movieListState.clear()
     }
 
     /**
@@ -90,7 +83,40 @@ class SearchViewModel @Inject constructor(
                 getMovieListUseCase.checkNextPaging(combineList)
 
                 setMovieList(combineList)
-                setMovieListState(combineList)
+                movieListState.addAll(result.getOrNull()?.toMutableStateList() ?: emptyList())
+            } else {
+                result.exceptionOrNull()?.let {
+                    val exception = it as BaseException
+                    failCallback?.invoke(exception.errorCode as ErrorCode)
+                } ?: failCallback?.invoke(ErrorCode.UNKOWN)
+            }
+            setLoading(false)
+        }
+    }
+
+    /**
+     * 영화 리스트 검색
+     */
+    fun searchCompose(
+        keyword : String,
+        failCallback : ((ErrorCode) -> Unit)? = {}
+    ) {
+        if (keyword.isEmpty()) {
+            return
+        }
+
+        this.searchedKeyword = keyword
+
+        viewModelScope.launch(mainDispatcher) {
+            setLoading(true)
+
+            val result = getMovieListUseCase.searchMovieListByCoroutine(keyword)
+
+            if (result.isSuccess) {
+                //페이징 체크
+//                getMovieListUseCase.checkNextPaging(combineList)
+                //이전 리스트 뒤에 생성
+                movieListState.addAll(result.getOrNull()?.toMutableStateList() ?: emptyList())
             } else {
                 result.exceptionOrNull()?.let {
                     val exception = it as BaseException
