@@ -57,8 +57,6 @@ fun SearchScreen(
             viewModel.clear()
             viewModel.searchCompose(input)
             coroutineScope.launch {
-                // Display the snackbar on the screen. `showSnackbar` is a function
-                // that suspends until the snackbar disappears from the screen
                 scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
                 scaffoldState.snackbarHostState.showSnackbar(input)
             }
